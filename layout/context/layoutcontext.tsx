@@ -1,9 +1,13 @@
 'use client';
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
+import { PrimeReactContext } from 'primereact/api';
+
 import { LayoutState, ChildContainerProps, LayoutConfig, LayoutContextProps } from '@/types';
 export const LayoutContext = createContext({} as LayoutContextProps);
 
 export const LayoutProvider = ({ children }: ChildContainerProps) => {
+    const { changeTheme } = useContext(PrimeReactContext);
+    const [themeLight, setThemeLight] = useState(true);
     const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>({
         ripple: false,
         inputStyle: 'outlined',
@@ -17,7 +21,6 @@ export const LayoutProvider = ({ children }: ChildContainerProps) => {
         staticMenuDesktopInactive: false,
         overlayMenuActive: false,
         profileSidebarVisible: false,
-        configSidebarVisible: false,
         staticMenuMobileActive: false,
         menuHoverActive: false
     });
@@ -38,6 +41,25 @@ export const LayoutProvider = ({ children }: ChildContainerProps) => {
         setLayoutState((prevLayoutState) => ({ ...prevLayoutState, profileSidebarVisible: !prevLayoutState.profileSidebarVisible }));
     };
 
+    // function to change theme (dark/light)
+    const _changeTheme = (theme: string, colorScheme: string) => {
+        changeTheme?.(layoutConfig.theme, theme, 'theme-css', () => {
+            setLayoutConfig((prevState: LayoutConfig) => ({ ...prevState, theme, colorScheme }));
+        });
+    };
+
+    const toggleTheme = () => {
+        setThemeLight(!themeLight);
+
+        if (themeLight) _changeTheme('lara-light-indigo', 'light');
+        else _changeTheme('lara-dark-indigo', 'dark');
+    };
+
+    useEffect(() => {
+        toggleTheme();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const isOverlay = () => {
         return layoutConfig.menuMode === 'overlay';
     };
@@ -52,7 +74,8 @@ export const LayoutProvider = ({ children }: ChildContainerProps) => {
         layoutState,
         setLayoutState,
         onMenuToggle,
-        showProfileSidebar
+        showProfileSidebar,
+        toggleTheme
     };
 
     return <LayoutContext.Provider value={value}>{children}</LayoutContext.Provider>;

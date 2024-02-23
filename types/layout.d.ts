@@ -24,7 +24,6 @@ export type LayoutState = {
     staticMenuDesktopInactive: boolean;
     overlayMenuActive: boolean;
     profileSidebarVisible: boolean;
-    configSidebarVisible: boolean;
     staticMenuMobileActive: boolean;
     menuHoverActive: boolean;
 };
@@ -45,6 +44,7 @@ export interface LayoutContextProps {
     setLayoutState: Dispatch<SetStateAction<LayoutState>>;
     onMenuToggle: () => void;
     showProfileSidebar: () => void;
+    toggleTheme: () => void;
 }
 
 export interface MenuContextProps {
