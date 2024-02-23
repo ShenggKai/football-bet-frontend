@@ -15,7 +15,7 @@ export const metadata: Metadata = {
         title: 'Trổ Tài Dự Đoán',
         url: '',
         description: 'Trang web dự đoán thể thao',
-        images: ['https://www.primefaces.org/static/social/sakai-react.png'],
+        images: ['https://github.com/ShenggKai/football-bet-frontend/blob/master/public/images/logo.png?raw=true'],
         ttl: 604800
     },
     icons: {
