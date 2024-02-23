@@ -1,0 +1,12 @@
+{
+    "version": "0.2",
+    "ignorePaths": ["node_modules", "yarn.lock", "package.json", "requirements.txt"],
+    "dictionaryDefinitions": [
+        {
+            "name": "custom-dictionary",
+            "path": "./.cspell/custom-dictionary.txt",
+            "addWords": true
+        }
+    ],
+    "dictionaries": ["custom-dictionary"]
+}

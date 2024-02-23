@@ -1,0 +1,24 @@
+# Custom Dictionary Words
+Đăng
+đoán
+Đoán
+hoặc
+inputtext
+khẩu
+khoản
+layoutcontext
+menubutton
+mừng
+MobiFone
+primeflex
+primeicons
+primereact
+Quên
+seperator
+tailwindcss
+thao
+tiếp
+Topbar
+topbarmenu
+topbarmenubutton
+Trang
