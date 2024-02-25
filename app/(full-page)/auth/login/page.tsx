@@ -16,6 +16,7 @@ import * as Yup from 'yup';
 // project import
 import { setAuthState } from '@/lib/features/auth/authSlice';
 import { useAppDispatch } from '@/lib/store';
+import { loginUser } from '@/lib/features/auth/loginAPI';
 
 // type
 type FieldName = 'username' | 'password';
@@ -36,6 +37,7 @@ const LoginPage = () => {
         onSubmit: async (values, helpers) => {
             try {
                 // await auth.signIn(values.email, values.password);
+                loginUser(values.username, values.password);
                 router.push('/');
                 dispatch(setAuthState(true));
             } catch (err) {
