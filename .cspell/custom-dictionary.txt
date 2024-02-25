@@ -37,6 +37,7 @@ primeicons
 primereact
 QUẢN
 Quên
+reduxjs
 sáng
 seperator
 tailwindcss
