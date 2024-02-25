@@ -1,19 +1,59 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
+
+// next.js
 import { useRouter } from 'next/navigation';
-import React, { useContext, useState } from 'react';
+
+// prime
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
-import { LayoutContext } from '../../../../layout/context/layoutcontext';
 import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
 
-const LoginPage = () => {
-    const [password, setPassword] = useState('');
-    const { layoutConfig } = useContext(LayoutContext);
+// third party
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
+// type
+type FieldName = 'username' | 'password';
+
+// ==================================|| Login Page ||==================================
+const LoginPage = () => {
     const router = useRouter();
-    const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            password: ''
+        },
+        validationSchema: Yup.object({
+            username: Yup.string().trim('Không được có khoảng trắng').strict(true).max(255).required('Không được để trống'),
+            password: Yup.string().trim('Không được có khoảng trắng').strict(true).max(255).required('Không được để trống')
+        }),
+        onSubmit: async (values, helpers) => {
+            try {
+                // await auth.signIn(values.email, values.password);
+                router.push('/');
+            } catch (err) {
+                helpers.setStatus({ success: false });
+                // helpers.setErrors({ submit: err.message });
+                helpers.setSubmitting(false);
+            }
+        }
+    });
+
+    const isFormFieldInvalid = (name: FieldName) => !!(formik.touched[name] && formik.errors[name]);
+
+    const getFormErrorMessage = (name: FieldName) => {
+        return (
+            isFormFieldInvalid(name) && (
+                <div className="mt-1">
+                    <small className="p-error">{formik.errors[name]}</small>
+                </div>
+            )
+        );
+    };
+
+    // style
+    const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden');
 
     return (
         <div className={containerClassName}>
@@ -32,25 +72,49 @@ const LoginPage = () => {
                             <span className="text-600 font-medium">Đăng nhập để tiếp tục</span>
                         </div>
 
-                        <div>
-                            <label htmlFor="email1" className="block text-900 text-xl font-medium mb-2">
-                                Tài khoản
-                            </label>
-                            <InputText id="email1" type="text" placeholder="Username hoặc email MobiFone" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
+                        <form noValidate onSubmit={formik.handleSubmit} className="field mt-6">
+                            {/* username or email input */}
+                            <span className="p-float-label">
+                                <InputText
+                                    id="username"
+                                    type="text"
+                                    value={formik.values.username}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    className={classNames('w-full md:w-30rem', { 'p-invalid': isFormFieldInvalid('username') })}
+                                    style={{ padding: '1rem' }}
+                                />
+                                <label htmlFor="username">Username hoặc email</label>
+                            </span>
+                            {getFormErrorMessage('username')}
 
-                            <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
-                                Password
-                            </label>
-                            <Password inputId="password1" feedback={false} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" toggleMask className="w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Password>
+                            {/* password input */}
+                            <span className="p-float-label mt-5">
+                                <Password
+                                    inputId="password"
+                                    feedback={false}
+                                    value={formik.values.password}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    toggleMask
+                                    className="w-full"
+                                    inputClassName={classNames('w-full p-3 md:w-30rem', { 'p-invalid': isFormFieldInvalid('password') })}
+                                ></Password>
+                                <label htmlFor="password">Password</label>
+                            </span>
+                            {getFormErrorMessage('password')}
 
-                            <div className="flex align-items-center justify-content-between mb-5 gap-5">
+                            {/* forget password button */}
+                            <div className="flex align-items-center justify-content-between mb-5 mt-4">
                                 <div className="flex align-items-center"></div>
                                 <a className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>
                                     Quên mật khẩu?
                                 </a>
                             </div>
-                            <Button label="Đăng nhập" className="w-full p-3 text-xl" onClick={() => router.push('/')}></Button>
-                        </div>
+
+                            {/* login button */}
+                            <Button label="Đăng nhập" className="w-full p-3 text-xl" type="submit"></Button>
+                        </form>
                     </div>
                 </div>
             </div>
