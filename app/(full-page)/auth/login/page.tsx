@@ -13,11 +13,16 @@ import { classNames } from 'primereact/utils';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+// project import
+import { setAuthState } from '@/lib/features/auth/authSlice';
+import { useAppDispatch } from '@/lib/store';
+
 // type
 type FieldName = 'username' | 'password';
 
 // ==================================|| Login Page ||==================================
 const LoginPage = () => {
+    const dispatch = useAppDispatch();
     const router = useRouter();
     const formik = useFormik({
         initialValues: {
@@ -32,6 +37,7 @@ const LoginPage = () => {
             try {
                 // await auth.signIn(values.email, values.password);
                 router.push('/');
+                dispatch(setAuthState(true));
             } catch (err) {
                 helpers.setStatus({ success: false });
                 // helpers.setErrors({ submit: err.message });

@@ -1,5 +1,10 @@
+'use client';
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
+
+// project import
 import Layout from '../../layout/layout';
+import { useAppSelector } from '@/lib/store';
 
 interface AppLayoutProps {
     children: React.ReactNode;
@@ -24,5 +29,8 @@ export const metadata: Metadata = {
 };
 
 export default function AppLayout({ children }: AppLayoutProps) {
-    return <Layout>{children}</Layout>;
+    const authState = useAppSelector((state) => state.auth.authState);
+
+    if (!authState) redirect('/auth/login');
+    else return <Layout>{children}</Layout>;
 }

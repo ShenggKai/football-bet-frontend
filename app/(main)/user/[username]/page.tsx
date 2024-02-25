@@ -9,14 +9,20 @@ import { Button } from 'primereact/button';
 import { Chip } from 'primereact/chip';
 import { Dialog } from 'primereact/dialog';
 
+// project import
+import { setAuthState } from '@/lib/features/auth/authSlice';
+import { useAppDispatch } from '@/lib/store';
+
 // =======================|| User page ||=======================
 const UserPage = ({ params }: { params: { username: string } }) => {
+    const dispatch = useAppDispatch();
     const router = useRouter();
     const [displayConfirmation, setDisplayConfirmation] = useState(false);
 
     const handleLogOut = () => {
         setDisplayConfirmation(false);
-        router.push('/auth/login');
+        // router.push('/auth/login');
+        dispatch(setAuthState(false));
     };
 
     // pop-up footer
