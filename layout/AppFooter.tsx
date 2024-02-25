@@ -2,8 +2,7 @@ const AppFooter = () => {
     return (
         <div className="layout-footer">
             <img src={'/images/logo.svg'} alt="Logo" height="20" className="mr-2" />
-            Phát triển bởi
-            <span className="font-medium ml-1">Phòng Sản Phẩm</span>
+            Hỗ trợ kỹ thuật
             <span className="ml-5">Email:</span>
             <span className="font-medium ml-1">product.mbf2@gmail.com</span>
             <span className="ml-5">Hotline:</span>

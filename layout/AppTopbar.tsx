@@ -1,7 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { forwardRef, useContext, useImperativeHandle, useRef } from 'react';
 import { classNames } from 'primereact/utils';
+
+// next
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // project import
 import { AppTopbarRef } from '@/types';
@@ -9,6 +12,7 @@ import { LayoutContext } from './context/layoutcontext';
 
 // ==================================|| App Topbar ||==================================
 const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
+    const router = useRouter();
     const { layoutConfig, layoutState, onMenuToggle, showProfileSidebar, toggleTheme } = useContext(LayoutContext);
     const menubuttonRef = useRef(null);
     const topbarmenuRef = useRef(null);
@@ -19,6 +23,10 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
         topbarmenu: topbarmenuRef.current,
         topbarmenubutton: topbarmenubuttonRef.current
     }));
+
+    const handleViewUser = () => {
+        router.push('/user/admin');
+    };
 
     return (
         <div className="layout-topbar">
@@ -44,7 +52,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
                     <i className={`pi ${layoutConfig.colorScheme === 'light' ? 'pi-sun' : 'pi-moon'}`}></i>
                     <span>Chế độ {`${layoutConfig.colorScheme === 'light' ? 'sáng' : 'tối'}`}</span>
                 </button>
-                <button type="button" className="p-link layout-topbar-button">
+                <button type="button" className="p-link layout-topbar-button" onClick={handleViewUser}>
                     <i className="pi pi-user"></i>
                     <span>Tài khoản</span>
                 </button>
