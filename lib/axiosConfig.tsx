@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
-    baseURL: 'https://api.escuelajs.co/api/v1/users/3'
+    baseURL: 'https://5d3c-137-59-44-39.ngrok-free.app',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 });
 
 axiosInstance.interceptors.request.use(
@@ -17,8 +18,6 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
     function (response) {
-        console.log(response.data);
-
         return response;
     },
     function (error) {

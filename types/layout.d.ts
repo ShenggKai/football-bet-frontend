@@ -26,6 +26,7 @@ export type LayoutState = {
     profileSidebarVisible: boolean;
     staticMenuMobileActive: boolean;
     menuHoverActive: boolean;
+    isLoading: boolean;
 };
 
 export type LayoutConfig = {
@@ -45,6 +46,7 @@ export interface LayoutContextProps {
     onMenuToggle: () => void;
     showProfileSidebar: () => void;
     toggleTheme: () => void;
+    setIsLoading: (boolean) => void;
 }
 
 export interface MenuContextProps {

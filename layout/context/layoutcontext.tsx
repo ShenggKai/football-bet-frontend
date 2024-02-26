@@ -2,7 +2,10 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
 import { PrimeReactContext } from 'primereact/api';
 
+// project import
 import { LayoutState, ChildContainerProps, LayoutConfig, LayoutContextProps } from '@/types';
+import LoadingScreen from '@/lib/features/loading/loadingScreen';
+
 export const LayoutContext = createContext({} as LayoutContextProps);
 
 export const LayoutProvider = ({ children }: ChildContainerProps) => {
@@ -22,23 +25,40 @@ export const LayoutProvider = ({ children }: ChildContainerProps) => {
         overlayMenuActive: false,
         profileSidebarVisible: false,
         staticMenuMobileActive: false,
-        menuHoverActive: false
+        menuHoverActive: false,
+        isLoading: false
     });
 
     const onMenuToggle = () => {
         if (isOverlay()) {
-            setLayoutState((prevLayoutState) => ({ ...prevLayoutState, overlayMenuActive: !prevLayoutState.overlayMenuActive }));
+            setLayoutState((prevLayoutState) => ({
+                ...prevLayoutState,
+                overlayMenuActive: !prevLayoutState.overlayMenuActive
+            }));
         }
 
         if (isDesktop()) {
-            setLayoutState((prevLayoutState) => ({ ...prevLayoutState, staticMenuDesktopInactive: !prevLayoutState.staticMenuDesktopInactive }));
+            setLayoutState((prevLayoutState) => ({
+                ...prevLayoutState,
+                staticMenuDesktopInactive: !prevLayoutState.staticMenuDesktopInactive
+            }));
         } else {
-            setLayoutState((prevLayoutState) => ({ ...prevLayoutState, staticMenuMobileActive: !prevLayoutState.staticMenuMobileActive }));
+            setLayoutState((prevLayoutState) => ({
+                ...prevLayoutState,
+                staticMenuMobileActive: !prevLayoutState.staticMenuMobileActive
+            }));
         }
     };
 
     const showProfileSidebar = () => {
-        setLayoutState((prevLayoutState) => ({ ...prevLayoutState, profileSidebarVisible: !prevLayoutState.profileSidebarVisible }));
+        setLayoutState((prevLayoutState) => ({
+            ...prevLayoutState,
+            profileSidebarVisible: !prevLayoutState.profileSidebarVisible
+        }));
+    };
+
+    const setIsLoading = (state: boolean) => {
+        setLayoutState((prevLayoutState) => ({ ...prevLayoutState, isLoading: state }));
     };
 
     // function to change theme (dark/light)
@@ -75,8 +95,13 @@ export const LayoutProvider = ({ children }: ChildContainerProps) => {
         setLayoutState,
         onMenuToggle,
         showProfileSidebar,
-        toggleTheme
+        toggleTheme,
+        setIsLoading
     };
 
-    return <LayoutContext.Provider value={value}>{children}</LayoutContext.Provider>;
+    return (
+        <LayoutContext.Provider value={value}>
+            {layoutState.isLoading ? <LoadingScreen>{children}</LoadingScreen> : children}
+        </LayoutContext.Provider>
+    );
 };

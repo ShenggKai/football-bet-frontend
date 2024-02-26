@@ -4,17 +4,17 @@ import { axiosInstance } from '@/lib/axiosConfig';
 // ================|| Login User API ||================
 export const loginUser = async (username: string, password: string) => {
     try {
-        // const response = await axiosInstance.get('', {
-        //     username,
-        //     password
-        // });
-        const response = await axiosInstance.get('');
+        const response = await axiosInstance.post('/login', {
+            username,
+            password
+        });
 
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
-            return error.response?.data;
+        if (axios.isAxiosError(error) && error.response) {
+            console.log(error.response.data);
+        } else {
+            throw error;
         }
-        return error;
     }
 };
