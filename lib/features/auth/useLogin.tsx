@@ -34,9 +34,11 @@ const useLogin = () => {
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 showError(error.response.data.detail);
-
                 return error.response;
-            } else return error;
+            } else {
+                showError('Lỗi máy chủ');
+                return error;
+            }
         } finally {
             setIsLoading(false);
         }
