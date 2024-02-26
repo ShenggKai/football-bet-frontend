@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
-    baseURL: 'https://5d3c-137-59-44-39.ngrok-free.app',
+    baseURL: 'https://e71f-137-59-44-39.ngrok-free.app',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     timeout: 10000
 });
