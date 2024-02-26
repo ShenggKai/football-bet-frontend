@@ -12,7 +12,11 @@ export const loginUser = async (username: string, password: string) => {
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-            console.log(error.response.data);
+            if (error.code === 'ECONNABORTED') {
+                console.log('Request timed out');
+            } else if (error.response) {
+                console.log(error.response.data);
+            }
         } else {
             throw error;
         }

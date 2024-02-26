@@ -14,6 +14,9 @@ const useLogin = () => {
         try {
             const response = await loginUser(username, password);
             // handle successful login here, e.g. update user state, redirect, etc.
+
+            console.log(response);
+
             return response;
         } catch (err) {
             setError(err as Error);
