@@ -1,14 +1,17 @@
 'use client';
 import React, { useState, createContext, useContext, useEffect } from 'react';
 import { PrimeReactContext } from 'primereact/api';
+import { Toast } from 'primereact/toast';
 
 // project import
 import { LayoutState, ChildContainerProps, LayoutConfig, LayoutContextProps } from '@/types';
 import LoadingScreen from '@/lib/features/loading/loadingScreen';
+import ToastMessage from '@/lib/features/notification/toastMessage';
 
 export const LayoutContext = createContext({} as LayoutContextProps);
 
 export const LayoutProvider = ({ children }: ChildContainerProps) => {
+    const { toastRef, showSuccess, showInfo, showWarn, showError } = ToastMessage();
     const { changeTheme } = useContext(PrimeReactContext);
     const [themeLight, setThemeLight] = useState(true);
     const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>({
@@ -96,11 +99,16 @@ export const LayoutProvider = ({ children }: ChildContainerProps) => {
         onMenuToggle,
         showProfileSidebar,
         toggleTheme,
-        setIsLoading
+        setIsLoading,
+        showSuccess,
+        showInfo,
+        showWarn,
+        showError
     };
 
     return (
         <LayoutContext.Provider value={value}>
+            <Toast ref={toastRef} />
             {layoutState.isLoading ? <LoadingScreen>{children}</LoadingScreen> : children}
         </LayoutContext.Provider>
     );

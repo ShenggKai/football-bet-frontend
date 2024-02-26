@@ -1,31 +1,42 @@
-import { useState, useContext } from 'react';
-import { loginUser } from './loginAPI';
+import { useContext } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+
+// project import
 import { LayoutContext } from '@/layout/context/layoutcontext';
+import { loginUser } from './loginAPI';
+import { setAuthState } from '@/lib/features/auth/authSlice';
+import { useAppDispatch } from '@/lib/store';
 
 const useLogin = () => {
-    // const [isLoading, setIsLoading] = useState(false);
-    const { setIsLoading } = useContext(LayoutContext);
-    const [error, setError] = useState<null | Error>(null);
+    const { setIsLoading, showError, showSuccess } = useContext(LayoutContext);
+    const router = useRouter();
+    const dispatch = useAppDispatch();
 
     const login = async (username: string, password: string) => {
         setIsLoading(true);
-        setError(null);
 
         try {
             const response = await loginUser(username, password);
             // handle successful login here, e.g. update user state, redirect, etc.
 
-            console.log(response);
+            dispatch(setAuthState(true));
+            showSuccess('Đăng nhập thành công');
+            router.push('/');
 
             return response;
-        } catch (err) {
-            setError(err as Error);
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                showError(error.response.data.detail);
+
+                return error.response;
+            } else return error;
         } finally {
             setIsLoading(false);
         }
     };
 
-    return { login, error };
+    return { login };
 };
 
 export default useLogin;

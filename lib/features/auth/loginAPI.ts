@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { axiosInstance } from '@/lib/axiosConfig';
 
 // ================|| Login User API ||================
@@ -9,16 +8,8 @@ export const loginUser = async (username: string, password: string) => {
             password
         });
 
-        return response.data;
+        return response;
     } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-            if (error.code === 'ECONNABORTED') {
-                console.log('Request timed out');
-            } else if (error.response) {
-                console.log(error.response.data);
-            }
-        } else {
-            throw error;
-        }
+        throw error;
     }
 };

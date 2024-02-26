@@ -1,4 +1,10 @@
-import React, { ReactElement, Dispatch, SetStateAction, HTMLAttributeAnchorTarget, ReactNode } from 'react';
+import React, {
+    ReactElement,
+    Dispatch,
+    SetStateAction,
+    HTMLAttributeAnchorTarget,
+    ReactNode
+} from 'react';
 import { NextPage } from 'next';
 import { Demo } from './demo';
 import { Toast } from 'primereact/toast';
@@ -47,6 +53,10 @@ export interface LayoutContextProps {
     showProfileSidebar: () => void;
     toggleTheme: () => void;
     setIsLoading: (boolean) => void;
+    showSuccess: (string) => void;
+    showInfo: (string) => void;
+    showWarn: (string) => void;
+    showError: (string) => void;
 }
 
 export interface MenuContextProps {

@@ -1,8 +1,5 @@
 'use client';
 
-// next.js
-import { useRouter } from 'next/navigation';
-
 // prime
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
@@ -14,9 +11,6 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 // project import
-import { setAuthState } from '@/lib/features/auth/authSlice';
-import { useAppDispatch } from '@/lib/store';
-import { loginUser } from '@/lib/features/auth/loginAPI';
 import useLogin from '@/lib/features/auth/useLogin';
 
 // type
@@ -24,9 +18,7 @@ type FieldName = 'username' | 'password';
 
 // ==================================|| Login Page ||==================================
 const LoginPage = () => {
-    const { login, error } = useLogin();
-    const dispatch = useAppDispatch();
-    const router = useRouter();
+    const { login } = useLogin();
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -46,12 +38,10 @@ const LoginPage = () => {
         }),
         onSubmit: async (values, helpers) => {
             try {
-                // await auth.signIn(values.email, values.password);
-                // loginUser(values.username, values.password);
                 login(values.username, values.password);
-            } catch (err) {
+            } catch (err: any) {
                 helpers.setStatus({ success: false });
-                // helpers.setErrors({ submit: err.message });
+                helpers.setFieldError('submit', err.message);
                 helpers.setSubmitting(false);
             }
         }
