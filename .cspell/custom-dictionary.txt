@@ -1,5 +1,7 @@
 # Custom Dictionary Words
+blockui
 cách
+Cảnh
 chắc
 chắn
 chơi
@@ -35,12 +37,15 @@ Phòng
 primeflex
 primeicons
 primereact
+progressspinner
 QUẢN
 Quên
+reduxjs
 sáng
 seperator
 tailwindcss
 thắng
+Thành
 thao
 thay
 thông

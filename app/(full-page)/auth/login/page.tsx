@@ -1,8 +1,5 @@
 'use client';
 
-// next.js
-import { useRouter } from 'next/navigation';
-
 // prime
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
@@ -13,28 +10,38 @@ import { classNames } from 'primereact/utils';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+// project import
+import useLogin from '@/lib/features/auth/useLogin';
+
 // type
 type FieldName = 'username' | 'password';
 
 // ==================================|| Login Page ||==================================
 const LoginPage = () => {
-    const router = useRouter();
+    const { login } = useLogin();
     const formik = useFormik({
         initialValues: {
             username: '',
             password: ''
         },
         validationSchema: Yup.object({
-            username: Yup.string().trim('Không được có khoảng trắng').strict(true).max(255).required('Không được để trống'),
-            password: Yup.string().trim('Không được có khoảng trắng').strict(true).max(255).required('Không được để trống')
+            username: Yup.string()
+                .trim('Không được có khoảng trắng')
+                .strict(true)
+                .max(255)
+                .required('Không được để trống'),
+            password: Yup.string()
+                .trim('Không được có khoảng trắng')
+                .strict(true)
+                .max(255)
+                .required('Không được để trống')
         }),
         onSubmit: async (values, helpers) => {
             try {
-                // await auth.signIn(values.email, values.password);
-                router.push('/');
-            } catch (err) {
+                login(values.username, values.password);
+            } catch (err: any) {
                 helpers.setStatus({ success: false });
-                // helpers.setErrors({ submit: err.message });
+                helpers.setFieldError('submit', err.message);
                 helpers.setSubmitting(false);
             }
         }
@@ -53,7 +60,9 @@ const LoginPage = () => {
     };
 
     // style
-    const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden');
+    const containerClassName = classNames(
+        'surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden'
+    );
 
     return (
         <div className={containerClassName}>
@@ -62,13 +71,19 @@ const LoginPage = () => {
                     style={{
                         borderRadius: '56px',
                         padding: '0.3rem',
-                        background: 'linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)'
+                        background:
+                            'linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)'
                     }}
                 >
-                    <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
+                    <div
+                        className="w-full surface-card py-8 px-5 sm:px-8"
+                        style={{ borderRadius: '53px' }}
+                    >
                         <div className="text-center mb-5">
                             <img src="/images/logo.png" alt="Image" height="50" className="mb-3" />
-                            <div className="text-900 text-3xl font-medium mb-3">Trổ Tài Dự Đoán</div>
+                            <div className="text-900 text-3xl font-medium mb-3">
+                                Trổ Tài Dự Đoán
+                            </div>
                             <span className="text-600 font-medium">Đăng nhập để tiếp tục</span>
                         </div>
 
@@ -81,7 +96,9 @@ const LoginPage = () => {
                                     value={formik.values.username}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    className={classNames('w-full md:w-30rem', { 'p-invalid': isFormFieldInvalid('username') })}
+                                    className={classNames('w-full md:w-30rem', {
+                                        'p-invalid': isFormFieldInvalid('username')
+                                    })}
                                     style={{ padding: '1rem' }}
                                 />
                                 <label htmlFor="username">Username hoặc email</label>
@@ -98,7 +115,9 @@ const LoginPage = () => {
                                     onBlur={formik.handleBlur}
                                     toggleMask
                                     className="w-full"
-                                    inputClassName={classNames('w-full p-3 md:w-30rem', { 'p-invalid': isFormFieldInvalid('password') })}
+                                    inputClassName={classNames('w-full p-3 md:w-30rem', {
+                                        'p-invalid': isFormFieldInvalid('password')
+                                    })}
                                 ></Password>
                                 <label htmlFor="password">Password</label>
                             </span>
@@ -107,13 +126,20 @@ const LoginPage = () => {
                             {/* forget password button */}
                             <div className="flex align-items-center justify-content-between mb-5 mt-4">
                                 <div className="flex align-items-center"></div>
-                                <a className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>
+                                <a
+                                    className="font-medium no-underline ml-2 text-right cursor-pointer"
+                                    style={{ color: 'var(--primary-color)' }}
+                                >
                                     Quên mật khẩu?
                                 </a>
                             </div>
 
                             {/* login button */}
-                            <Button label="Đăng nhập" className="w-full p-3 text-xl" type="submit"></Button>
+                            <Button
+                                label="Đăng nhập"
+                                className="w-full p-3 text-xl"
+                                type="submit"
+                            ></Button>
                         </form>
                     </div>
                 </div>

@@ -1,11 +1,17 @@
 'use client';
 import React, { useState, createContext, useContext, useEffect } from 'react';
 import { PrimeReactContext } from 'primereact/api';
+import { Toast } from 'primereact/toast';
 
+// project import
 import { LayoutState, ChildContainerProps, LayoutConfig, LayoutContextProps } from '@/types';
+import LoadingScreen from '@/lib/features/loading/loadingScreen';
+import ToastMessage from '@/lib/features/notification/toastMessage';
+
 export const LayoutContext = createContext({} as LayoutContextProps);
 
 export const LayoutProvider = ({ children }: ChildContainerProps) => {
+    const { toastRef, showSuccess, showInfo, showWarn, showError } = ToastMessage();
     const { changeTheme } = useContext(PrimeReactContext);
     const [themeLight, setThemeLight] = useState(true);
     const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>({
@@ -22,23 +28,40 @@ export const LayoutProvider = ({ children }: ChildContainerProps) => {
         overlayMenuActive: false,
         profileSidebarVisible: false,
         staticMenuMobileActive: false,
-        menuHoverActive: false
+        menuHoverActive: false,
+        isLoading: false
     });
 
     const onMenuToggle = () => {
         if (isOverlay()) {
-            setLayoutState((prevLayoutState) => ({ ...prevLayoutState, overlayMenuActive: !prevLayoutState.overlayMenuActive }));
+            setLayoutState((prevLayoutState) => ({
+                ...prevLayoutState,
+                overlayMenuActive: !prevLayoutState.overlayMenuActive
+            }));
         }
 
         if (isDesktop()) {
-            setLayoutState((prevLayoutState) => ({ ...prevLayoutState, staticMenuDesktopInactive: !prevLayoutState.staticMenuDesktopInactive }));
+            setLayoutState((prevLayoutState) => ({
+                ...prevLayoutState,
+                staticMenuDesktopInactive: !prevLayoutState.staticMenuDesktopInactive
+            }));
         } else {
-            setLayoutState((prevLayoutState) => ({ ...prevLayoutState, staticMenuMobileActive: !prevLayoutState.staticMenuMobileActive }));
+            setLayoutState((prevLayoutState) => ({
+                ...prevLayoutState,
+                staticMenuMobileActive: !prevLayoutState.staticMenuMobileActive
+            }));
         }
     };
 
     const showProfileSidebar = () => {
-        setLayoutState((prevLayoutState) => ({ ...prevLayoutState, profileSidebarVisible: !prevLayoutState.profileSidebarVisible }));
+        setLayoutState((prevLayoutState) => ({
+            ...prevLayoutState,
+            profileSidebarVisible: !prevLayoutState.profileSidebarVisible
+        }));
+    };
+
+    const setIsLoading = (state: boolean) => {
+        setLayoutState((prevLayoutState) => ({ ...prevLayoutState, isLoading: state }));
     };
 
     // function to change theme (dark/light)
@@ -75,8 +98,18 @@ export const LayoutProvider = ({ children }: ChildContainerProps) => {
         setLayoutState,
         onMenuToggle,
         showProfileSidebar,
-        toggleTheme
+        toggleTheme,
+        setIsLoading,
+        showSuccess,
+        showInfo,
+        showWarn,
+        showError
     };
 
-    return <LayoutContext.Provider value={value}>{children}</LayoutContext.Provider>;
+    return (
+        <LayoutContext.Provider value={value}>
+            <Toast ref={toastRef} />
+            {layoutState.isLoading ? <LoadingScreen>{children}</LoadingScreen> : children}
+        </LayoutContext.Provider>
+    );
 };
