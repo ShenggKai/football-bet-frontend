@@ -5,12 +5,16 @@ export interface IAuthState {
     authState: boolean;
     accessToken: string | null;
     refreshToken: string | null;
+    username: string | null;
+    roleName: string | null;
 }
 
 const initialState: IAuthState = {
     authState: false,
     accessToken: null,
-    refreshToken: null
+    refreshToken: null,
+    username: null,
+    roleName: null
 };
 
 export const authSlice = createSlice({
@@ -25,12 +29,19 @@ export const authSlice = createSlice({
             state.accessToken = accessToken;
             state.refreshToken = refreshToken;
         },
+        setUserInfo: (state, action: PayloadAction<[string, string]>) => {
+            const [username, roleName] = action.payload;
+            state.username = username;
+            state.roleName = roleName;
+        },
         clearTokens: (state) => {
             state.accessToken = null;
             state.refreshToken = null;
+            state.username = null;
+            state.roleName = null;
         }
     }
 });
 
-export const { setAuthState, setTokens, clearTokens } = authSlice.actions;
+export const { setAuthState, setTokens, setUserInfo, clearTokens } = authSlice.actions;
 export const authReducer = authSlice.reducer;

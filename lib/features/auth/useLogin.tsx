@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 // project import
 import { LayoutContext } from '@/layout/context/layoutcontext';
 import { loginUser } from './loginAPI';
-import { setAuthState, setTokens } from '@/lib/features/auth/authSlice';
+import { setAuthState, setTokens, setUserInfo } from '@/lib/features/auth/authSlice';
 import { useAppDispatch } from '@/lib/store';
 
 const useLogin = () => {
@@ -22,6 +22,9 @@ const useLogin = () => {
 
             // save tokens
             dispatch(setTokens([response.data.access_token, response.data.refresh_token]));
+
+            // save user info
+            dispatch(setUserInfo([response.data.username, response.data.role_name]));
 
             // set status logged in = true
             dispatch(setAuthState(true));
