@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 // project import
 import { LayoutContext } from '@/layout/context/layoutcontext';
 import { loginUser } from './loginAPI';
-import { setAuthState } from '@/lib/features/auth/authSlice';
+import { setAuthState, setTokens, setUserInfo } from '@/lib/features/auth/authSlice';
 import { useAppDispatch } from '@/lib/store';
 
 const useLogin = () => {
@@ -20,7 +20,16 @@ const useLogin = () => {
             const response = await loginUser(username, password);
             // handle successful login here, e.g. update user state, redirect, etc.
 
+            // save tokens
+            dispatch(setTokens([response.data.access_token, response.data.refresh_token]));
+
+            // save user info
+            dispatch(setUserInfo([response.data.username, response.data.role_name]));
+
+            // set status logged in = true
             dispatch(setAuthState(true));
+
+            // show message
             showSuccess('Đăng nhập thành công');
             router.push('/');
 
@@ -28,9 +37,11 @@ const useLogin = () => {
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 showError(error.response.data.detail);
-
                 return error.response;
-            } else return error;
+            } else {
+                showError('Lỗi máy chủ');
+                return error;
+            }
         } finally {
             setIsLoading(false);
         }
