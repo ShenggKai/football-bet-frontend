@@ -1,14 +1,23 @@
 'use client';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Ripple } from 'primereact/ripple';
-import { classNames } from 'primereact/utils';
+
 import React, { useEffect, useContext } from 'react';
-import { CSSTransition } from 'react-transition-group';
-import { MenuContext } from './context/menucontext';
-import { AppMenuItemProps } from '@/types';
+
+// Next.js
+import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 
+// PrimeReact
+import { Ripple } from 'primereact/ripple';
+import { classNames } from 'primereact/utils';
+
+// third party
+import { CSSTransition } from 'react-transition-group';
+
+// project import
+import { AppMenuItemProps } from '@/types';
+import { MenuContext } from '@/layout/context/menucontext';
+
+// ========================|| Menu item ||========================
 const AppMenuitem = (props: AppMenuItemProps) => {
     const pathname = usePathname();
     const searchParams = useSearchParams();

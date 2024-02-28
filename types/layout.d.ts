@@ -5,9 +5,14 @@ import React, {
     HTMLAttributeAnchorTarget,
     ReactNode
 } from 'react';
+
+// Next.js
 import { NextPage } from 'next';
-import { Demo } from './demo';
+// PrimeReact
 import { Toast } from 'primereact/toast';
+
+// project import
+import { Demo } from '@types/demo';
 
 /* Breadcrumb Types */
 export interface AppBreadcrumbProps {

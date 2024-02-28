@@ -1,3 +1,4 @@
+// ========================|| App footer ||========================
 const AppFooter = () => {
     return (
         <div className="layout-footer">

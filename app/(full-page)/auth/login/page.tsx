@@ -1,6 +1,6 @@
 'use client';
 
-// prime
+// PrimeReact
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
 import { InputText } from 'primereact/inputtext';

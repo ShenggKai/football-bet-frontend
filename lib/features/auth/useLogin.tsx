@@ -1,13 +1,18 @@
 import { useContext } from 'react';
+
+// axios
 import axios from 'axios';
+
+// Next.js
 import { useRouter } from 'next/navigation';
 
 // project import
 import { LayoutContext } from '@/layout/context/layoutcontext';
-import { loginUser } from './loginAPI';
+import { loginUser } from '@/lib/features/auth/loginAPI';
 import { setAuthState, setTokens, setUserInfo } from '@/lib/features/auth/authSlice';
 import { useAppDispatch } from '@/lib/store';
 
+// ========================|| Custom hook login ||========================
 const useLogin = () => {
     const { setIsLoading, showError, showSuccess } = useContext(LayoutContext);
     const router = useRouter();

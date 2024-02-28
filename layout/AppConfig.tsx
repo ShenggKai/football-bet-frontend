@@ -1,10 +1,15 @@
 'use client';
 
-import { Sidebar } from 'primereact/sidebar';
-import React, { useContext, useEffect } from 'react';
-import { AppConfigProps } from '@/types';
-import { LayoutContext } from './context/layoutcontext';
+import { useContext, useEffect } from 'react';
 
+// PrimeReact
+import { Sidebar } from 'primereact/sidebar';
+
+// project import
+import { AppConfigProps } from '@/types';
+import { LayoutContext } from '@/layout/context/layoutcontext';
+
+// ========================|| App config ||========================
 const AppConfig = (props: AppConfigProps) => {
     const { layoutConfig } = useContext(LayoutContext);
 
@@ -23,7 +28,11 @@ const AppConfig = (props: AppConfigProps) => {
                 <i className="pi pi-cog"></i>
             </button>
 
-            <Sidebar onHide={() => {}} position="right" className="layout-config-sidebar w-20rem"></Sidebar>
+            <Sidebar
+                onHide={() => {}}
+                position="right"
+                className="layout-config-sidebar w-20rem"
+            ></Sidebar>
         </>
     );
 };

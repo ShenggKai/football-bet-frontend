@@ -1,8 +1,12 @@
 'use client';
+
+// Next.js
 import { useRouter } from 'next/navigation';
-import React from 'react';
+
+// PrimeReact
 import { Button } from 'primereact/button';
 
+// ========================|| Error page ||========================
 const ErrorPage = () => {
     const router = useRouter();
 

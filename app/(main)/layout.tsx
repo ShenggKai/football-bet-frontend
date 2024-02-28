@@ -1,5 +1,8 @@
+// Next.js
 import { Metadata } from 'next';
-import Layout from '../../layout/layout';
+
+// project import
+import Layout from '@/layout/layout';
 import PrivateRoute from '@/lib/features/privateRoute';
 
 interface AppLayoutProps {
@@ -16,7 +19,9 @@ export const metadata: Metadata = {
         title: 'Trổ Tài Dự Đoán',
         url: '',
         description: 'Trang web dự đoán thể thao',
-        images: ['https://github.com/ShenggKai/football-bet-frontend/blob/master/public/images/logo.png?raw=true'],
+        images: [
+            'https://github.com/ShenggKai/football-bet-frontend/blob/master/public/images/logo.png?raw=true'
+        ],
         ttl: 604800
     },
     icons: {
@@ -24,6 +29,7 @@ export const metadata: Metadata = {
     }
 };
 
+// ========================|| Main app layout ||========================
 export default function AppLayout({ children }: AppLayoutProps) {
     return (
         <Layout>

@@ -1,7 +1,7 @@
 'use client';
 import { ChartData, ChartOptions } from 'chart.js';
 import { Chart } from 'primereact/chart';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { LayoutContext } from '../../../../layout/context/layoutcontext';
 import type { ChartDataState, ChartOptionsState } from '@/types';
 
@@ -13,7 +13,8 @@ const ChartDemo = () => {
     useEffect(() => {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color') || '#495057';
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary') || '#6c757d';
+        const textColorSecondary =
+            documentStyle.getPropertyValue('--text-color-secondary') || '#6c757d';
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border') || '#dfe7ef';
         const barData: ChartData = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -75,8 +76,16 @@ const ChartDemo = () => {
             datasets: [
                 {
                     data: [540, 325, 702],
-                    backgroundColor: [documentStyle.getPropertyValue('--indigo-500') || '#6366f1', documentStyle.getPropertyValue('--purple-500') || '#a855f7', documentStyle.getPropertyValue('--teal-500') || '#14b8a6'],
-                    hoverBackgroundColor: [documentStyle.getPropertyValue('--indigo-400') || '#8183f4', documentStyle.getPropertyValue('--purple-400') || '#b975f9', documentStyle.getPropertyValue('--teal-400') || '#41c5b7']
+                    backgroundColor: [
+                        documentStyle.getPropertyValue('--indigo-500') || '#6366f1',
+                        documentStyle.getPropertyValue('--purple-500') || '#a855f7',
+                        documentStyle.getPropertyValue('--teal-500') || '#14b8a6'
+                    ],
+                    hoverBackgroundColor: [
+                        documentStyle.getPropertyValue('--indigo-400') || '#8183f4',
+                        documentStyle.getPropertyValue('--purple-400') || '#b975f9',
+                        documentStyle.getPropertyValue('--teal-400') || '#41c5b7'
+                    ]
                 }
             ]
         };
@@ -187,19 +196,23 @@ const ChartDemo = () => {
                 {
                     label: 'My First dataset',
                     borderColor: documentStyle.getPropertyValue('--indigo-400') || '#8183f4',
-                    pointBackgroundColor: documentStyle.getPropertyValue('--indigo-400') || '#8183f4',
+                    pointBackgroundColor:
+                        documentStyle.getPropertyValue('--indigo-400') || '#8183f4',
                     pointBorderColor: documentStyle.getPropertyValue('--indigo-400') || '#8183f4',
                     pointHoverBackgroundColor: textColor,
-                    pointHoverBorderColor: documentStyle.getPropertyValue('--indigo-400') || '#8183f4',
+                    pointHoverBorderColor:
+                        documentStyle.getPropertyValue('--indigo-400') || '#8183f4',
                     data: [65, 59, 90, 81, 56, 55, 40]
                 },
                 {
                     label: 'My Second dataset',
                     borderColor: documentStyle.getPropertyValue('--purple-400') || '#b975f9',
-                    pointBackgroundColor: documentStyle.getPropertyValue('--purple-400') || '#b975f9',
+                    pointBackgroundColor:
+                        documentStyle.getPropertyValue('--purple-400') || '#b975f9',
                     pointBorderColor: documentStyle.getPropertyValue('--purple-400') || '#b975f9',
                     pointHoverBackgroundColor: textColor,
-                    pointHoverBorderColor: documentStyle.getPropertyValue('--purple-400') || '#b975f9',
+                    pointHoverBorderColor:
+                        documentStyle.getPropertyValue('--purple-400') || '#b975f9',
                     data: [28, 48, 40, 19, 96, 27, 100]
                 }
             ]
@@ -267,13 +280,21 @@ const ChartDemo = () => {
             <div className="col-12 xl:col-6">
                 <div className="card flex flex-column align-items-center">
                     <h5 className="text-left w-full">Polar Area Chart</h5>
-                    <Chart type="polarArea" data={data.polarData} options={options.polarOptions}></Chart>
+                    <Chart
+                        type="polarArea"
+                        data={data.polarData}
+                        options={options.polarOptions}
+                    ></Chart>
                 </div>
             </div>
             <div className="col-12 xl:col-6">
                 <div className="card flex flex-column align-items-center">
                     <h5 className="text-left w-full">Radar Chart</h5>
-                    <Chart type="radar" data={data.radarData} options={options.radarOptions}></Chart>
+                    <Chart
+                        type="radar"
+                        data={data.radarData}
+                        options={options.radarOptions}
+                    ></Chart>
                 </div>
             </div>
         </div>

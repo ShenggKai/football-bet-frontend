@@ -1,4 +1,7 @@
+// axios
 import axios from 'axios';
+
+// Next.js
 import { useRouter } from 'next/navigation';
 
 // project import
@@ -13,6 +16,7 @@ export const axiosInstance = axios.create({
     timeout: 10000
 });
 
+// handle before request
 axiosInstance.interceptors.request.use(
     function (config) {
         // Do something before request is sent
@@ -24,6 +28,7 @@ axiosInstance.interceptors.request.use(
     }
 );
 
+// handle after response
 function createResponseInterceptor() {
     // const refreshToken = useAppSelector((state) => state.auth.refreshToken);
 
@@ -75,4 +80,5 @@ function createResponseInterceptor() {
     );
 }
 
+// Execute the method once during start
 createResponseInterceptor();

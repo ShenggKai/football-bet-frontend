@@ -1,9 +1,10 @@
 // project import
-import { useAppSelector } from '@/lib/store';
-import AppMenuitem from './AppMenuitem';
-import { MenuProvider } from './context/menucontext';
 import { AppMenuItem } from '@/types';
+import { useAppSelector } from '@/lib/store';
+import { MenuProvider } from '@/layout/context/menucontext';
+import AppMenuitem from '@/layout/AppMenuitem';
 
+// ========================|| App menu ||========================
 const AppMenu = () => {
     // get user's role
     const roleName = useAppSelector((state) => state.auth.roleName);

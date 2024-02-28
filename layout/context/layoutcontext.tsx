@@ -1,5 +1,8 @@
 'use client';
-import React, { useState, createContext, useContext, useEffect } from 'react';
+
+import { useState, createContext, useContext, useEffect } from 'react';
+
+// PrimeReact
 import { PrimeReactContext } from 'primereact/api';
 import { Toast } from 'primereact/toast';
 
@@ -8,8 +11,10 @@ import { LayoutState, ChildContainerProps, LayoutConfig, LayoutContextProps } fr
 import LoadingScreen from '@/lib/features/loading/loadingScreen';
 import ToastMessage from '@/lib/features/notification/toastMessage';
 
+// ========================|| Layout context ||========================
 export const LayoutContext = createContext({} as LayoutContextProps);
 
+// // ========================|| Layout provider ||========================
 export const LayoutProvider = ({ children }: ChildContainerProps) => {
     const { toastRef, showSuccess, showInfo, showWarn, showError } = ToastMessage();
     const { changeTheme } = useContext(PrimeReactContext);

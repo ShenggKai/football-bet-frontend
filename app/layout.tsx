@@ -1,14 +1,18 @@
 'use client';
-import { LayoutProvider } from '../layout/context/layoutcontext';
+
+// prime react
 import { PrimeReactProvider } from 'primereact/api';
 import 'primereact/resources/primereact.css';
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
+
+// next
 import dynamic from 'next/dynamic';
 
 // project import
-import '../styles/layout/layout.scss';
-import '../styles/demo/Demos.scss';
+import { LayoutProvider } from '@/layout/context/layoutcontext';
+import '@/styles/layout/layout.scss';
+import '@/styles/demo/Demos.scss';
 
 const StoreProvider = dynamic(() => import('./storeProvider'), {
     ssr: false
@@ -18,6 +22,7 @@ interface RootLayoutProps {
     children: React.ReactNode;
 }
 
+// ========================|| Root layout ||========================
 export default function RootLayout({ children }: RootLayoutProps) {
     return (
         <html lang="vi" suppressHydrationWarning>

@@ -1,10 +1,11 @@
+// redux
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
 import { persistReducer } from 'redux-persist';
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 
 // project import
-import { authReducer } from './features/auth/authSlice';
+import { authReducer } from '@/lib/features/auth/authSlice';
 
 const createNoopStorage = () => {
     return {
@@ -22,7 +23,7 @@ const createNoopStorage = () => {
 
 const storage = typeof window !== 'undefined' ? createWebStorage('local') : createNoopStorage();
 
-// configure which key you want to persist
+// configure key to persist
 const authPersistConfig = {
     key: 'auth',
     storage: storage,
@@ -35,13 +36,18 @@ const rootReducer = combineReducers({
     auth: persistedReducer
 });
 
+// ========================|| Store ||========================
 export const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false })
 });
 
+// ========================|| Type ||========================
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
+// ========================|| App dispatch ||========================
 export const useAppDispatch = () => useDispatch<AppDispatch>();
+
+// ========================|| App selector ||========================
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

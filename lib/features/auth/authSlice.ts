@@ -1,3 +1,4 @@
+// redux
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
@@ -9,6 +10,7 @@ export interface IAuthState {
     roleName: string | null;
 }
 
+// initial auth state
 const initialState: IAuthState = {
     authState: false,
     accessToken: null,
@@ -17,6 +19,7 @@ const initialState: IAuthState = {
     roleName: null
 };
 
+// ========================|| Authentication slice ||========================
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
