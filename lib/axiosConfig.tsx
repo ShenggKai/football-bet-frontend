@@ -81,4 +81,4 @@ function createResponseInterceptor() {
 }
 
 // Execute the method once during start
-createResponseInterceptor();
+// createResponseInterceptor();
