@@ -13,17 +13,14 @@ import dynamic from 'next/dynamic';
 import { LayoutProvider } from '@/layout/context/layoutcontext';
 import '@/styles/layout/layout.scss';
 import '@/styles/demo/Demos.scss';
+import { ChildContainerProps } from '@/types';
 
 const StoreProvider = dynamic(() => import('./storeProvider'), {
     ssr: false
 });
 
-interface RootLayoutProps {
-    children: React.ReactNode;
-}
-
 // ========================|| Root layout ||========================
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: ChildContainerProps) {
     return (
         <html lang="vi" suppressHydrationWarning>
             <head>
