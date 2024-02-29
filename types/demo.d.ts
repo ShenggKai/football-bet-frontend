@@ -61,6 +61,21 @@ export interface AppMailReplyProps {
 }
 
 declare namespace Demo {
+    // match type
+    type Match = {
+        id: number;
+        team_a: string;
+        team_b: string;
+        chap: number;
+        money: number;
+        time: string;
+        status: 'Đang diễn ra' | 'Sắp diễn ra' | 'Đã kết thúc';
+        options: string[];
+        vote_a_list: number[];
+        vote_b_list: number[];
+        vote_draw_list: number[];
+    };
+
     interface Task {
         id?: number;
         name?: string;
