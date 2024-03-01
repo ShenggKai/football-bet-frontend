@@ -74,6 +74,7 @@ declare namespace Demo {
         vote_a_list: number[];
         vote_b_list: number[];
         vote_draw_list: number[];
+        score: number[];
     };
 
     interface Task {
