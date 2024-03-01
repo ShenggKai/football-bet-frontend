@@ -6,6 +6,7 @@ interface Country {
     code: string;
 }
 
+// =======================|| Chose team dropdown ||=======================
 export default function TeamDropdown({ id }: { id: string }) {
     const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
     const countries: Country[] = [
