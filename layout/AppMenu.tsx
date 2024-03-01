@@ -11,20 +11,60 @@ const AppMenu = () => {
 
     const adminMenu = [
         {
-            label: 'QUẢN LÝ',
+            label: 'QUẢN TRỊ HỆ THỐNG',
             items: [
                 { label: 'Người dùng', icon: 'pi pi-fw pi-user-edit', to: '/' },
                 { label: 'Mùa giải', icon: 'pi pi-fw pi-globe', to: '/uikit/misc' },
-                { label: 'Trận đấu', icon: 'pi pi-fw pi-star', to: '/uikit/charts' },
                 { label: 'Người chơi mùa giải', icon: 'pi pi-fw pi-users', to: '/uikit/menu' }
             ]
         },
         {
-            label: 'BÁO CÁO',
+            label: 'DỰ ĐOÁN',
             items: [
-                { label: 'Số tiền', icon: 'pi pi-fw pi-money-bill', to: '/uikit/input' },
-                { label: 'Tỉ lệ thắng', icon: 'pi pi-fw pi-chart-bar', to: '/uikit/table' }
+                { label: 'Trận đấu', icon: 'pi pi-fw pi-sitemap', to: '/match' },
+                {
+                    label: 'Báo cáo',
+                    icon: 'pi pi-fw pi-chart-bar',
+                    items: [
+                        {
+                            label: 'Chi tiết trận đấu',
+                            icon: 'pi pi-fw pi-chart-line',
+                            to: '/uikit/input'
+                        },
+                        {
+                            label: 'Tổng hợp',
+                            icon: 'pi pi-fw pi-chart-pie',
+                            to: '/uikit/input'
+                        }
+                    ]
+                }
             ]
+        },
+        {
+            label: 'MINI GAME',
+            items: [
+                { label: 'Quản trị mini game', icon: 'pi pi-fw pi-star', to: '/uikit/input' },
+                {
+                    label: 'Báo cáo',
+                    icon: 'pi pi-fw pi-chart-bar',
+                    items: [
+                        {
+                            label: 'Chi tiết mini game',
+                            icon: 'pi pi-fw pi-chart-line',
+                            to: '/uikit/input'
+                        },
+                        {
+                            label: 'Tổng hợp',
+                            icon: 'pi pi-fw pi-chart-pie',
+                            to: '/uikit/input'
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            label: 'KHÁC',
+            items: [{ label: 'Hướng dẫn chơi', icon: 'pi pi-fw pi-question', to: '/uikit/misc' }]
         }
     ];
 
