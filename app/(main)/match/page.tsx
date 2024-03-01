@@ -233,6 +233,15 @@ const MatchPage = () => {
         );
     };
 
+    const indexBody = (data: any, props: any) => {
+        let index = parseInt(props.rowIndex + 1);
+        return (
+            <>
+                <span>{index}</span>
+            </>
+        );
+    };
+
     const matchNameBody = (rowData: Demo.Match) => {
         return (
             <>
@@ -385,6 +394,7 @@ const MatchPage = () => {
             <Button label="Lưu" icon="pi pi-check" text onClick={saveProduct} />
         </>
     );
+
     const deleteProductDialogFooter = (
         <>
             <Button
@@ -425,6 +435,7 @@ const MatchPage = () => {
                         header={header}
                     >
                         <Column headerStyle={{ width: '1rem' }}></Column>
+                        <Column header="STT" body={indexBody} align={'center'}></Column>
                         <Column
                             field="team_a"
                             header="Trận đấu"
