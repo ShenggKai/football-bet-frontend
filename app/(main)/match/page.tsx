@@ -43,7 +43,8 @@ const MatchPage = () => {
         options: [],
         vote_a_list: [],
         vote_b_list: [],
-        vote_draw_list: []
+        vote_draw_list: [],
+        score: []
     };
 
     // dropdown to select season
@@ -206,7 +207,7 @@ const MatchPage = () => {
     //     setMatch(_match);
     // };
 
-    const leftToolbarTemplate = () => {
+    const leftToolbar = () => {
         return (
             <>
                 <div className="my-2">
@@ -224,7 +225,7 @@ const MatchPage = () => {
         );
     };
 
-    const rightToolbarTemplate = () => {
+    const rightToolbar = () => {
         return (
             <>
                 <Button label="Thêm" icon="pi pi-plus" severity="success" onClick={openNew} />
@@ -232,7 +233,16 @@ const MatchPage = () => {
         );
     };
 
-    const teamABodyTemplate = (rowData: Demo.Match) => {
+    const matchNameBody = (rowData: Demo.Match) => {
+        return (
+            <>
+                <span className="p-column-title">name</span>
+                {rowData.team_a + ' vs ' + rowData.team_b}
+            </>
+        );
+    };
+
+    const teamABody = (rowData: Demo.Match) => {
         return (
             <>
                 <span className="p-column-title">teamA</span>
@@ -241,7 +251,7 @@ const MatchPage = () => {
         );
     };
 
-    const teamBBodyTemplate = (rowData: Demo.Match) => {
+    const teamBBody = (rowData: Demo.Match) => {
         return (
             <>
                 <span className="p-column-title">teamB</span>
@@ -250,34 +260,70 @@ const MatchPage = () => {
         );
     };
 
-    const moneyBodyTemplate = (rowData: Demo.Match) => {
+    const moneyBody = (rowData: Demo.Match) => {
         return (
             <>
-                <span className="p-column-title">Money</span>
+                <span className="p-column-title">money</span>
                 {formatCurrency(rowData.money as number)}
             </>
         );
     };
 
-    const chapBodyTemplate = (rowData: Demo.Match) => {
+    const chapBody = (rowData: Demo.Match) => {
         return (
             <>
-                <span className="p-column-title">Chap</span>
+                <span className="p-column-title">chap</span>
                 {rowData.chap as number}
             </>
         );
     };
 
-    const timeBodyTemplate = (rowData: Demo.Match) => {
+    const timeBody = (rowData: Demo.Match) => {
         return (
             <>
-                <span className="p-column-title">Category</span>
+                <span className="p-column-title">time</span>
                 {rowData.time}
             </>
         );
     };
 
-    const statusBodyTemplate = (rowData: Demo.Match) => {
+    const voteASumBody = (rowData: Demo.Match) => {
+        return (
+            <>
+                <span className="p-column-title">voteA</span>
+                {rowData.vote_a_list.length}
+            </>
+        );
+    };
+
+    const voteBSumBody = (rowData: Demo.Match) => {
+        return (
+            <>
+                <span className="p-column-title">voteB</span>
+                {rowData.vote_b_list.length}
+            </>
+        );
+    };
+
+    const voteDrawSumBody = (rowData: Demo.Match) => {
+        return (
+            <>
+                <span className="p-column-title">voteDraw</span>
+                {rowData.vote_draw_list.length}
+            </>
+        );
+    };
+
+    const scoreBody = (rowData: Demo.Match) => {
+        return (
+            <>
+                <span className="p-column-title">score</span>
+                {rowData.score[0] + ' : ' + rowData.score[1]}
+            </>
+        );
+    };
+
+    const statusBody = (rowData: Demo.Match) => {
         return (
             <>
                 <span className="p-column-title">Status</span>
@@ -297,7 +343,7 @@ const MatchPage = () => {
         );
     };
 
-    const actionBodyTemplate = (rowData: Demo.Match) => {
+    const actionBody = (rowData: Demo.Match) => {
         return (
             <>
                 <Button
@@ -326,7 +372,7 @@ const MatchPage = () => {
                 <i className="pi pi-search" />
                 <InputText
                     type="search"
-                    onInput={(e) => setGlobalFilter(e.currentTarget.value)}
+                    onInput={(e) => console.log(e.currentTarget.value)}
                     placeholder="Tìm kiếm"
                 />
             </span>
@@ -358,11 +404,7 @@ const MatchPage = () => {
             <div className="col-12">
                 <div className="card">
                     <Toast ref={toast} />
-                    <Toolbar
-                        className="mb-4"
-                        start={leftToolbarTemplate}
-                        end={rightToolbarTemplate}
-                    ></Toolbar>
+                    <Toolbar className="mb-4" start={leftToolbar} end={rightToolbar}></Toolbar>
 
                     <DataTable
                         ref={dt}
@@ -372,8 +414,9 @@ const MatchPage = () => {
                         onSelectionChange={(e) => setSelectedProducts(e.value as any)}
                         dataKey="id"
                         paginator
-                        rows={10}
-                        rowsPerPageOptions={[5, 10, 25]}
+                        scrollable
+                        rows={5}
+                        rowsPerPageOptions={[5, 10, 25, 50]}
                         className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Hiển thị {first} đến {last} trong {totalRecords} trận đấu"
@@ -383,56 +426,99 @@ const MatchPage = () => {
                     >
                         <Column headerStyle={{ width: '1rem' }}></Column>
                         <Column
-                            field="teamA"
-                            header="Team A"
+                            field="team_a"
+                            header="Trận đấu"
                             sortable
-                            body={teamABodyTemplate}
-                            headerStyle={{ minWidth: '5rem' }}
+                            body={matchNameBody}
+                            headerStyle={{ minWidth: '15rem' }}
                             align={'center'}
                         ></Column>
                         <Column
-                            field="teamB"
+                            field="team_a"
+                            header="Team A"
+                            sortable
+                            body={teamABody}
+                            headerStyle={{ minWidth: '10rem' }}
+                            align={'center'}
+                        ></Column>
+                        <Column
+                            field="team_b"
                             header="Team B"
                             sortable
-                            body={teamBBodyTemplate}
-                            headerStyle={{ minWidth: '5rem' }}
+                            body={teamBBody}
+                            headerStyle={{ minWidth: '10rem' }}
                             align={'center'}
                         ></Column>
                         <Column
                             field="chap"
                             header="A chấp B"
                             sortable
-                            body={chapBodyTemplate}
-                            headerStyle={{ minWidth: '5rem' }}
+                            body={chapBody}
+                            headerStyle={{ minWidth: '8rem' }}
                             align={'center'}
                         ></Column>
                         <Column
-                            field="price"
+                            field="money"
                             header="Số tiền"
-                            body={moneyBodyTemplate}
+                            body={moneyBody}
                             sortable
                             headerStyle={{ minWidth: '10rem' }}
                             align={'center'}
                         ></Column>
                         <Column
-                            field="category"
+                            field="time"
                             header="Giờ bóng lăn"
                             sortable
-                            body={timeBodyTemplate}
-                            headerStyle={{ minWidth: '10rem' }}
+                            body={timeBody}
+                            headerStyle={{ minWidth: '12rem' }}
                             align={'center'}
                         ></Column>
                         <Column
-                            field="inventoryStatus"
+                            field="status"
                             header="Trạng thái"
-                            body={statusBodyTemplate}
+                            body={statusBody}
                             sortable
                             headerStyle={{ minWidth: '10rem' }}
                             align={'center'}
                         ></Column>
                         <Column
-                            body={actionBodyTemplate}
+                            field="vote_a_list"
+                            header="Lượt vote A"
+                            sortable
+                            body={voteASumBody}
                             headerStyle={{ minWidth: '10rem' }}
+                            align={'center'}
+                        ></Column>
+                        <Column
+                            field="vote_b_list"
+                            header="Lượt vote B"
+                            sortable
+                            body={voteBSumBody}
+                            headerStyle={{ minWidth: '10rem' }}
+                            align={'center'}
+                        ></Column>
+                        <Column
+                            field="vote_draw_list"
+                            header="Lượt vote hòa"
+                            sortable
+                            body={voteDrawSumBody}
+                            headerStyle={{ minWidth: '11rem' }}
+                            align={'center'}
+                        ></Column>
+                        <Column
+                            field="score"
+                            header="Tỉ số"
+                            sortable
+                            body={scoreBody}
+                            headerStyle={{ minWidth: '6rem' }}
+                            align={'center'}
+                        ></Column>
+
+                        <Column
+                            body={actionBody}
+                            headerStyle={{ minWidth: '10rem' }}
+                            frozen
+                            alignFrozen="right"
                         ></Column>
                     </DataTable>
 
