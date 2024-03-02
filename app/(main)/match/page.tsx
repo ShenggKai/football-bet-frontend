@@ -186,6 +186,10 @@ const MatchPage = () => {
         setMatch(_match);
     };
 
+    const exportCSV = () => {
+        dt.current?.exportCSV();
+    };
+
     // const onInputChange = (
     //     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     //     match_name: string
@@ -226,7 +230,14 @@ const MatchPage = () => {
     const rightToolbar = () => {
         return (
             <>
-                <Button label="Thêm" icon="pi pi-plus" severity="success" onClick={openNew} />
+                <Button
+                    label="Thêm"
+                    icon="pi pi-plus"
+                    severity="success"
+                    onClick={openNew}
+                    className="mr-2 inline-block"
+                />
+                <Button label="Xuất" icon="pi pi-upload" severity="help" onClick={exportCSV} />
             </>
         );
     };
@@ -421,9 +432,8 @@ const MatchPage = () => {
                         <Column headerStyle={{ width: '1rem' }}></Column>
                         <Column header="STT" body={indexBody} align={'center'}></Column>
                         <Column
-                            field="team_a"
+                            field="name"
                             header="Trận đấu"
-                            sortable
                             body={matchNameBody}
                             headerStyle={{ minWidth: '15rem' }}
                             align={'center'}
@@ -469,6 +479,14 @@ const MatchPage = () => {
                             align={'center'}
                         ></Column>
                         <Column
+                            field="score"
+                            header="Tỉ số"
+                            sortable
+                            body={scoreBody}
+                            headerStyle={{ minWidth: '6rem' }}
+                            align={'center'}
+                        ></Column>
+                        <Column
                             field="status"
                             header="Trạng thái"
                             body={statusBody}
@@ -500,15 +518,6 @@ const MatchPage = () => {
                             headerStyle={{ minWidth: '11rem' }}
                             align={'center'}
                         ></Column>
-                        <Column
-                            field="score"
-                            header="Tỉ số"
-                            sortable
-                            body={scoreBody}
-                            headerStyle={{ minWidth: '6rem' }}
-                            align={'center'}
-                        ></Column>
-
                         <Column
                             body={actionBody}
                             headerStyle={{ minWidth: '10rem' }}
