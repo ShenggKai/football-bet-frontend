@@ -2,9 +2,6 @@
 
 import { useContext, useEffect } from 'react';
 
-// PrimeReact
-import { Sidebar } from 'primereact/sidebar';
-
 // project import
 import { AppConfigProps } from '@/types';
 import { LayoutContext } from '@/layout/context/layoutcontext';
@@ -24,15 +21,7 @@ const AppConfig = (props: AppConfigProps) => {
 
     return (
         <>
-            <button className="layout-config-button config-link" type="button">
-                <i className="pi pi-cog"></i>
-            </button>
-
-            <Sidebar
-                onHide={() => {}}
-                position="right"
-                className="layout-config-sidebar w-20rem"
-            ></Sidebar>
+            <button hidden type="button"></button>
         </>
     );
 };

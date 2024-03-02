@@ -4,10 +4,7 @@ import { Metadata } from 'next';
 // project import
 import Layout from '@/layout/layout';
 import PrivateRoute from '@/lib/features/privateRoute';
-
-interface AppLayoutProps {
-    children: React.ReactNode;
-}
+import { ChildContainerProps } from '@/types';
 
 export const metadata: Metadata = {
     title: 'Trổ Tài Dự Đoán',
@@ -30,7 +27,7 @@ export const metadata: Metadata = {
 };
 
 // ========================|| Main app layout ||========================
-export default function AppLayout({ children }: AppLayoutProps) {
+export default function AppLayout({ children }: ChildContainerProps) {
     return (
         <Layout>
             <PrivateRoute>{children}</PrivateRoute>
