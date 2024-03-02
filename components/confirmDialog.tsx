@@ -11,13 +11,14 @@ interface ConfirmDialogProps {
     onNo: () => void;
 }
 
-// default value
-ConfirmDialog.defaultProps = {
-    width: 350
-};
-
 // =======================|| Confirm dialog ||=======================
-export default function ConfirmDialog(props: ConfirmDialogProps) {
+export default function ConfirmDialog({
+    visible,
+    width = 350,
+    confirmMessage,
+    onYes,
+    onNo
+}: ConfirmDialogProps) {
     // pop-up footer
     const confirmationDialogFooter = (
         <>
@@ -25,26 +26,26 @@ export default function ConfirmDialog(props: ConfirmDialogProps) {
                 type="button"
                 label="Không"
                 icon="pi pi-times"
-                onClick={() => props.onNo()}
+                onClick={() => onNo()}
                 text
                 autoFocus
             />
-            <Button type="button" label="Có" icon="pi pi-check" onClick={props.onYes} text />
+            <Button type="button" label="Có" icon="pi pi-check" onClick={onYes} text />
         </>
     );
 
     return (
         <Dialog
             header="Xác nhận"
-            visible={props.visible}
-            onHide={() => props.onNo()}
-            style={{ maxWidth: `${props.width}px` }}
+            visible={visible}
+            onHide={() => onNo()}
+            style={{ maxWidth: `${width}px` }}
             modal
             footer={confirmationDialogFooter}
         >
             <div className="flex align-items-center justify-content-center">
                 <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                {props.confirmMessage}
+                {confirmMessage}
             </div>
         </Dialog>
     );

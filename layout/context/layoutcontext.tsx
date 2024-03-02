@@ -8,8 +8,7 @@ import { Toast } from 'primereact/toast';
 
 // project import
 import { LayoutState, ChildContainerProps, LayoutConfig, LayoutContextProps } from '@/types';
-import LoadingScreen from '@/lib/features/loading/loadingScreen';
-import ToastMessage from '@/lib/features/notification/toastMessage';
+import { LoadingScreen, ToastMessage } from '@/components';
 
 // ========================|| Layout context ||========================
 export const LayoutContext = createContext({} as LayoutContextProps);

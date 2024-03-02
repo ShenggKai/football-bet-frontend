@@ -5,8 +5,8 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 // project import
-import { useAppSelector, useAppDispatch } from '@/lib/store';
-import { setTokens, clearTokens } from '@/lib/features/auth/authSlice';
+import { useAppSelector, useAppDispatch } from '@/redux/store';
+import { setTokens, clearTokens } from '@/redux/reducers/authSlice';
 
 const baseURL = 'http://127.0.0.1:8000';
 

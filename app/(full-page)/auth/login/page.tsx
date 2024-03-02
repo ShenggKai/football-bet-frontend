@@ -11,14 +11,14 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 // project import
-import useLogin from '@/lib/features/auth/useLogin';
+import useAuth from '@/hooks/useAuth';
 
 // type
 type FieldName = 'username' | 'password';
 
 // ==================================|| Login Page ||==================================
 const LoginPage = () => {
-    const { login } = useLogin();
+    const { handleLogin } = useAuth();
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -38,7 +38,7 @@ const LoginPage = () => {
         }),
         onSubmit: async (values, helpers) => {
             try {
-                login(values.username, values.password);
+                handleLogin(values.username, values.password);
             } catch (err: any) {
                 helpers.setStatus({ success: false });
                 helpers.setFieldError('submit', err.message);

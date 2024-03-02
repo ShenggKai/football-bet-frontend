@@ -4,7 +4,7 @@
 import { redirect } from 'next/navigation';
 
 // project import
-import { useAppSelector } from '@/lib/store';
+import { useAppSelector } from '@/redux/store';
 import { ChildContainerProps } from '@/types';
 
 // ========================|| Private route ||========================

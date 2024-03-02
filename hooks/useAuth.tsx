@@ -8,17 +8,17 @@ import { useRouter } from 'next/navigation';
 
 // project import
 import { LayoutContext } from '@/layout/context/layoutcontext';
-import { loginUser } from '@/lib/features/auth/loginAPI';
-import { setAuthState, setTokens, setUserInfo } from '@/lib/features/auth/authSlice';
-import { useAppDispatch } from '@/lib/store';
+import { loginUser } from '@/api/authAPI';
+import { setAuthState, setTokens, setUserInfo } from '@/redux/reducers/authSlice';
+import { useAppDispatch } from '@/redux/store';
 
 // ========================|| Custom hook login ||========================
-const useLogin = () => {
+const useAuth = () => {
     const { setIsLoading, showError, showSuccess } = useContext(LayoutContext);
     const router = useRouter();
     const dispatch = useAppDispatch();
 
-    const login = async (username: string, password: string) => {
+    const handleLogin = async (username: string, password: string) => {
         setIsLoading(true);
 
         try {
@@ -52,7 +52,7 @@ const useLogin = () => {
         }
     };
 
-    return { login };
+    return { handleLogin };
 };
 
-export default useLogin;
+export default useAuth;

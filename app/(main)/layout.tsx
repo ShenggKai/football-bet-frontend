@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 
 // project import
 import Layout from '@/layout/layout';
-import PrivateRoute from '@/lib/features/privateRoute';
+import { PrivateRoute } from '@/components';
 import { ChildContainerProps } from '@/types';
 
 export const metadata: Metadata = {

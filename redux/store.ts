@@ -5,7 +5,7 @@ import { persistReducer } from 'redux-persist';
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 
 // project import
-import { authReducer } from '@/lib/features/auth/authSlice';
+import { authReducer } from '@/redux/reducers/authSlice';
 
 const createNoopStorage = () => {
     return {

@@ -7,8 +7,8 @@ import { Button } from 'primereact/button';
 import { Chip } from 'primereact/chip';
 
 // project import
-import { setAuthState, clearTokens } from '@/lib/features/auth/authSlice';
-import { useAppDispatch } from '@/lib/store';
+import { setAuthState, clearTokens } from '@/redux/reducers/authSlice';
+import { useAppDispatch } from '@/redux/store';
 import { ConfirmDialog } from '@/components';
 
 // =======================|| User page ||=======================
@@ -18,8 +18,8 @@ const UserPage = ({ params }: { params: { username: string } }) => {
 
     const handleLogOut = () => {
         setDisplayConfirmation(false);
-        dispatch(setAuthState(false));
         dispatch(clearTokens());
+        dispatch(setAuthState(false));
     };
 
     return (

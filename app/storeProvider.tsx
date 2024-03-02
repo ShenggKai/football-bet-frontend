@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 
 // project import
-import { store } from '@/lib/store';
+import { store } from '@/redux/store';
 
 persistStore(store);
 

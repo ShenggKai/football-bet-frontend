@@ -1,6 +1,6 @@
 // project import
 import { AppMenuItem } from '@/types';
-import { useAppSelector } from '@/lib/store';
+import { useAppSelector } from '@/redux/store';
 import { MenuProvider } from '@/layout/context/menucontext';
 import AppMenuitem from '@/layout/AppMenuitem';
 

@@ -1,5 +1,5 @@
 // project import
-import { axiosInstance } from '@/lib/axiosConfig';
+import { axiosInstance } from '@/api/apiConfig';
 
 // ================|| Login User API ||================
 export const loginUser = async (username: string, password: string) => {
