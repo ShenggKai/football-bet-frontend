@@ -9,11 +9,9 @@ import { DataTable } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
 import { RadioButton, RadioButtonChangeEvent } from 'primereact/radiobutton';
 import { Toast } from 'primereact/toast';
 import { Toolbar } from 'primereact/toolbar';
-import { classNames } from 'primereact/utils';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 
@@ -21,7 +19,7 @@ import { Calendar } from 'primereact/calendar';
 import { Demo } from '@/types';
 import { MatchService } from '@/demo/service/MatchService';
 import { LayoutContext } from '@/layout/context/layoutcontext';
-import { TeamDropdown } from '@/components';
+import { TeamDropdown, ConfirmDialog } from '@/components';
 
 // type
 interface InputValue {
@@ -395,20 +393,6 @@ const MatchPage = () => {
         </>
     );
 
-    const deleteProductDialogFooter = (
-        <>
-            <Button
-                type="button"
-                label="Không"
-                icon="pi pi-times"
-                onClick={hideDeleteProductDialog}
-                text
-                autoFocus
-            />
-            <Button type="button" label="Có" icon="pi pi-check" onClick={deleteItem} text />
-        </>
-    );
-
     return (
         <div className="grid crud-demo">
             <div className="col-12">
@@ -639,27 +623,18 @@ const MatchPage = () => {
                         </div>
                     </Dialog>
 
-                    <Dialog
+                    <ConfirmDialog
                         visible={deleteProductDialog}
-                        style={{ maxWidth: '590px' }}
-                        header="Xác nhận"
-                        modal
-                        footer={deleteProductDialogFooter}
-                        onHide={hideDeleteProductDialog}
-                    >
-                        <div className="flex align-items-center justify-content-center">
-                            <i
-                                className="pi pi-exclamation-triangle mr-3"
-                                style={{ fontSize: '2rem' }}
-                            />
-                            {match && (
-                                <span>
-                                    Bạn có chắc chắn muốn xóa trận đấu giữa <b>{match.team_a}</b> và{' '}
-                                    <b>{match.team_b}</b>?
-                                </span>
-                            )}
-                        </div>
-                    </Dialog>
+                        width={590}
+                        confirmMessage={
+                            <span>
+                                Bạn có chắc chắn muốn xóa trận đấu giữa <b>{match.team_a}</b> và{' '}
+                                <b>{match.team_b}</b>?
+                            </span>
+                        }
+                        onYes={deleteItem}
+                        onNo={hideDeleteProductDialog}
+                    />
                 </div>
             </div>
         </div>

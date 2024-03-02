@@ -1,14 +1,15 @@
 'use client';
+
 import { useState } from 'react';
 
 // primereact
 import { Button } from 'primereact/button';
 import { Chip } from 'primereact/chip';
-import { Dialog } from 'primereact/dialog';
 
 // project import
 import { setAuthState, clearTokens } from '@/lib/features/auth/authSlice';
 import { useAppDispatch } from '@/lib/store';
+import { ConfirmDialog } from '@/components';
 
 // =======================|| User page ||=======================
 const UserPage = ({ params }: { params: { username: string } }) => {
@@ -20,21 +21,6 @@ const UserPage = ({ params }: { params: { username: string } }) => {
         dispatch(setAuthState(false));
         dispatch(clearTokens());
     };
-
-    // pop-up footer
-    const confirmationDialogFooter = (
-        <>
-            <Button
-                type="button"
-                label="Không"
-                icon="pi pi-times"
-                onClick={() => setDisplayConfirmation(false)}
-                text
-                autoFocus
-            />
-            <Button type="button" label="Có" icon="pi pi-check" onClick={handleLogOut} text />
-        </>
-    );
 
     return (
         <div className="grid">
@@ -80,22 +66,13 @@ const UserPage = ({ params }: { params: { username: string } }) => {
                         severity="secondary"
                         onClick={() => setDisplayConfirmation(true)}
                     ></Button>
-                    <Dialog
-                        header="Xác nhận"
+
+                    <ConfirmDialog
                         visible={displayConfirmation}
-                        onHide={() => setDisplayConfirmation(false)}
-                        style={{ width: '350px' }}
-                        modal
-                        footer={confirmationDialogFooter}
-                    >
-                        <div className="flex align-items-center justify-content-center">
-                            <i
-                                className="pi pi-exclamation-triangle mr-3"
-                                style={{ fontSize: '2rem' }}
-                            />
-                            <span>Bạn có chắc chắn muốn đăng xuất?</span>
-                        </div>
-                    </Dialog>
+                        onYes={handleLogOut}
+                        onNo={() => setDisplayConfirmation(false)}
+                        confirmMessage={<span>Bạn có chắc chắn muốn đăng xuất?</span>}
+                    />
                 </div>
             </div>
         </div>
