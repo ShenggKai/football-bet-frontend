@@ -1,13 +1,10 @@
 'use client';
-
 import React, { useEffect, useRef, useState, useContext } from 'react';
-
-// PrimeReact
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
-import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
+import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { RadioButton, RadioButtonChangeEvent } from 'primereact/radiobutton';
 import { Toast } from 'primereact/toast';
@@ -15,29 +12,22 @@ import { Toolbar } from 'primereact/toolbar';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { Chips } from 'primereact/chips';
-
-// project import
 import { Demo } from '@/types';
 import { MatchService } from '@/demo/service/MatchService';
 import { LayoutContext } from '@/layout/context/layoutcontext';
 import { ConfirmDialog } from '@/components';
-
-// type
-interface InputValue {
-    index: number;
-    name: string;
-}
+import { InputValue } from './page';
 
 // ========================|| Match page ||========================
 /* @todo Used 'as any' for types here. Will fix in next version due to onSelectionChange event type issue. */
-const MatchPage = () => {
+export const MatchPage = () => {
     let emptyMatch: Demo.Match = {
         id: 0,
         chap: 0,
         name: '',
         money: 0,
         time: '0001/01/01 00:00',
-        status: 'Sắp diễn ra',
+        status: 'Đang diễn ra',
         options: [],
         vote_correct: 0,
         vote_wrong: 0,
@@ -54,16 +44,39 @@ const MatchPage = () => {
         { name: 'World Cup 2022', index: 2 }
     ];
 
+    const keoChap = [
+        { chap: '0' },
+        { chap: '0.5' },
+        { chap: '1' },
+        { chap: '1.5' },
+        { chap: '2' },
+        { chap: '2.5' },
+        { chap: '3' },
+        { chap: '3.5' },
+        { chap: '4' },
+        { chap: '4.5' },
+        { chap: '5' },
+        { chap: '5.5' },
+        { chap: '6' },
+        { chap: '6.5' },
+        { chap: '7' },
+        { chap: '7.5' },
+        { chap: '8' },
+        { chap: '8.5' },
+        { chap: '9' },
+        { chap: '9.5' },
+        { chap: '10' }
+    ];
+
     const { showError, showSuccess } = useContext(LayoutContext);
     const [matches, setMatches] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [actionType, setActionType] = useState<string>('');
     const [chipsValue, setChipsValue] = useState<any[]>([]);
-    const [chapValue, setChapValue] = useState(0);
-    const [productDialog, setMatchDialog] = useState(false);
+    const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [match, setMatch] = useState<Demo.Match>(emptyMatch);
     const [selectedProducts, setSelectedProducts] = useState(null);
+    const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState('');
     const toast = useRef<Toast>(null);
     const dt = useRef<DataTable<any>>(null);
@@ -86,34 +99,56 @@ const MatchPage = () => {
     };
 
     const openNew = () => {
-        setActionType('new');
         setMatch(emptyMatch);
-        setMatchDialog(true);
+        setSubmitted(false);
+        setProductDialog(true);
     };
 
     const hideDialog = () => {
-        setMatchDialog(false);
+        setSubmitted(false);
+        setProductDialog(false);
     };
 
     const hideDeleteProductDialog = () => {
         setDeleteProductDialog(false);
     };
 
-    const saveMatch = () => {
-        showSuccess('Thêm trận thành công');
-        setMatchDialog(false);
-        setMatch(emptyMatch);
+    const saveProduct = () => {
+        setSubmitted(true);
+
+        if (match.name.trim()) {
+            let _matches = [...(matches as any)];
+            let _match = { ...match };
+            if (match.id) {
+                const index = findIndexById(match.id.toString());
+
+                _matches[index] = _match;
+                toast.current?.show({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'match Updated',
+                    life: 3000
+                });
+            } else {
+                // _match.id = createId();
+                _matches.push(_match);
+                toast.current?.show({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'match Created',
+                    life: 3000
+                });
+            }
+
+            setMatches(_matches as any);
+            setProductDialog(false);
+            setMatch(emptyMatch);
+        }
     };
 
-    const editMatch = (match: Demo.Match) => {
-        setActionType('edit');
+    const editProduct = (match: Demo.Match) => {
         setMatch({ ...match });
-        setMatchDialog(true);
-    };
-
-    const viewMatch = (match: Demo.Match) => {
-        setActionType('info');
-        setMatchDialog(true);
+        setProductDialog(true);
     };
 
     const confirmDeleteItem = (match: Demo.Match) => {
@@ -158,18 +193,14 @@ const MatchPage = () => {
     //     const val = (e.target && e.target.value) || '';
     //     let _match = { ...match };
     //     _match[`${match_name}`] = val;
-
     //     setMatch(_match);
     // };
-
     // const onInputNumberChange = (e: InputNumberValueChangeEvent, name: string) => {
     //     const val = e.value || 0;
     //     let _match = { ...match };
     //     _match[`${name}`] = val;
-
     //     setMatch(_match);
     // };
-
     const leftToolbar = () => {
         return (
             <>
@@ -313,7 +344,7 @@ const MatchPage = () => {
                     text
                     severity="info"
                     className="mr-2"
-                    onClick={() => viewMatch(rowData)}
+                    onClick={() => editProduct(rowData)}
                 />
                 <Button
                     icon="pi pi-pencil"
@@ -321,7 +352,7 @@ const MatchPage = () => {
                     text
                     severity="success"
                     className="mr-2"
-                    onClick={() => editMatch(rowData)}
+                    onClick={() => editProduct(rowData)}
                 />
                 <Button
                     icon="pi pi-trash"
@@ -346,6 +377,13 @@ const MatchPage = () => {
                 />
             </span>
         </div>
+    );
+
+    const productDialogFooter = (
+        <>
+            <Button label="Hủy" icon="pi pi-times" text onClick={hideDialog} />
+            <Button label="Lưu" icon="pi pi-check" text onClick={saveProduct} />
+        </>
     );
 
     return (
@@ -460,47 +498,22 @@ const MatchPage = () => {
                     <Dialog
                         visible={productDialog}
                         style={{ width: '450px' }}
-                        header={
-                            actionType === 'new'
-                                ? 'Tạo trận đấu'
-                                : actionType === 'edit'
-                                ? 'Chỉnh sửa trận đấu'
-                                : 'Thông tin chi tiết'
-                        }
+                        header="Tạo trận đấu"
                         modal
                         className="p-fluid"
-                        footer={
-                            <>
-                                <Button label="Hủy" icon="pi pi-times" text onClick={hideDialog} />
-                                <Button label="Lưu" icon="pi pi-check" text onClick={saveMatch} />
-                            </>
-                        }
+                        footer={productDialogFooter}
                         onHide={hideDialog}
                     >
-                        {/* Ten tran dau */}
-                        <div className="field">
-                            <label htmlFor="name">Tên trận đấu</label>
-                            <InputText id="name" />
-                        </div>
-                        {/* {submitted && !match.team_a && (
-                                <small className="p-invalid">Name is required.</small>
-                            )} */}
-
-                        {/* date time */}
+                        {/* name and money*/}
                         <div className="formgrid grid">
-                            <div className="field col">
-                                <label htmlFor="chap">Tỉ lệ chấp</label>
-                                <InputNumber
-                                    inputId="chap"
-                                    value={chapValue}
-                                    onValueChange={(e) => setChapValue(e.value ?? 0)}
-                                    minFractionDigits={0}
-                                    maxFractionDigits={1}
-                                />
+                            {/* Ten tran dau */}
+                            <div className="field col-8">
+                                <label htmlFor="name">Tên trận đấu</label>
+                                <InputText id="name" />
                             </div>
 
                             {/* money */}
-                            <div className="field col">
+                            <div className="field col-4">
                                 <label htmlFor="money">Tiền cược</label>
                                 <InputNumber
                                     id="money"
@@ -512,7 +525,10 @@ const MatchPage = () => {
                                 />
                             </div>
                         </div>
-
+                        {/* {submitted && !match.team_a && (
+                    <small className="p-invalid">Name is required.</small>
+                )} */}
+                        {/* date time */}
                         <div className="field">
                             <label htmlFor="description">Thời điểm bóng lăn</label>
                             <Calendar
@@ -523,8 +539,7 @@ const MatchPage = () => {
                                 onChange={(e) => setCalendarValue(e.value ?? null)}
                             />
                         </div>
-
-                        {/* status */}
+                        status
                         <div className="field">
                             <label className="mb-3">Trạng thái</label>
                             <div className="formgrid grid">
@@ -560,7 +575,6 @@ const MatchPage = () => {
                                 </div>
                             </div>
                         </div>
-
                         <div className="field">
                             <label htmlFor="option" className="mb-3">
                                 Danh sách lựa chọn
@@ -585,5 +599,3 @@ const MatchPage = () => {
         </div>
     );
 };
-
-export default MatchPage;
