@@ -23,6 +23,7 @@ formik
 giải
 hoặc
 Hướng
+inputmask
 inputnumber
 inputtext
 inputtextarea
@@ -38,6 +39,7 @@ liên
 lòng
 menubutton
 menucontext
+minigame
 MobiFone
 mừng
 muốn

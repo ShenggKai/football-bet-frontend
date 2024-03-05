@@ -36,6 +36,7 @@ import {
     AppMailReplyProps,
     AppMailProps
 } from './demo';
+import { CustomColumn } from './component';
 
 type ChildContainerProps = {
     children: ReactNode;
@@ -70,5 +71,6 @@ export type {
     AppMailSidebarItem,
     AppMailReplyProps,
     AppMailProps,
-    AppMenuItem
+    AppMenuItem,
+    CustomColumn
 };

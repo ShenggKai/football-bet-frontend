@@ -64,17 +64,33 @@ declare namespace Demo {
     // match type
     type Match = {
         id: number;
-        team_a: string;
-        team_b: string;
-        chap: number;
+        chap: string;
+        name: string;
         money: number;
         time: string;
-        status: 'Đang diễn ra' | 'Sắp diễn ra' | 'Đã kết thúc';
         options: string[];
-        vote_a_list: number[];
-        vote_b_list: number[];
-        vote_draw_list: number[];
-        score: number[];
+        vote_correct: number;
+        vote_wrong: number;
+        vote_sum: number;
+        score: string;
+        [key: string]: any;
+    };
+
+    // match detail
+    type MatchDetail = {
+        match_id: number;
+        match_name: string;
+        time: string;
+        vote: Vote[];
+    };
+
+    // vote
+    type Vote = {
+        user_id: number;
+        member_name: string;
+        vote_time: string;
+        member_option: string;
+        vote_status: string;
     };
 
     interface Task {

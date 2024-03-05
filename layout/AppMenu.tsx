@@ -19,9 +19,9 @@ const AppMenu = () => {
             ]
         },
         {
-            label: 'DỰ ĐOÁN',
+            label: 'TRẬN ĐẤU',
             items: [
-                { label: 'Trận đấu', icon: 'pi pi-fw pi-sitemap', to: '/match' },
+                { label: 'Quản lý trận đấu', icon: 'pi pi-fw pi-sitemap', to: '/match/manage' },
                 {
                     label: 'Báo cáo',
                     icon: 'pi pi-fw pi-chart-bar',
@@ -29,12 +29,12 @@ const AppMenu = () => {
                         {
                             label: 'Chi tiết trận đấu',
                             icon: 'pi pi-fw pi-chart-line',
-                            to: '/uikit/input'
+                            to: '/match/report-match'
                         },
                         {
                             label: 'Tổng hợp',
                             icon: 'pi pi-fw pi-chart-pie',
-                            to: '/uikit/input'
+                            to: '/match/report'
                         }
                     ]
                 }
@@ -43,7 +43,7 @@ const AppMenu = () => {
         {
             label: 'MINI GAME',
             items: [
-                { label: 'Quản trị mini game', icon: 'pi pi-fw pi-star', to: '/uikit/input' },
+                { label: 'Quản lý mini game', icon: 'pi pi-fw pi-star', to: '/minigame/manage' },
                 {
                     label: 'Báo cáo',
                     icon: 'pi pi-fw pi-chart-bar',
@@ -51,12 +51,12 @@ const AppMenu = () => {
                         {
                             label: 'Chi tiết mini game',
                             icon: 'pi pi-fw pi-chart-line',
-                            to: '/uikit/input'
+                            to: '/minigame/report-minigame'
                         },
                         {
                             label: 'Tổng hợp',
                             icon: 'pi pi-fw pi-chart-pie',
-                            to: '/uikit/input'
+                            to: '/minigame/report'
                         }
                     ]
                 }
