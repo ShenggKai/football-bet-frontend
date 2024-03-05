@@ -9,18 +9,19 @@ import { DataTable } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
-import { RadioButton, RadioButtonChangeEvent } from 'primereact/radiobutton';
 import { Toast } from 'primereact/toast';
 import { Toolbar } from 'primereact/toolbar';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { Chips } from 'primereact/chips';
+import { Divider } from 'primereact/divider';
 
 // project import
 import { Demo } from '@/types';
 import { MatchService } from '@/demo/service/MatchService';
 import { LayoutContext } from '@/layout/context/layoutcontext';
 import { ConfirmDialog } from '@/components';
+import { formatDate, covertDateToString } from '@/utils/format';
 
 // type
 interface InputValue {
@@ -33,16 +34,16 @@ interface InputValue {
 const MatchPage = () => {
     let emptyMatch: Demo.Match = {
         id: 0,
-        chap: 0,
+        chap: '0',
         name: '',
         money: 0,
-        time: '0001/01/01 00:00',
+        time: covertDateToString(new Date()),
         status: 'Sắp diễn ra',
         options: [],
         vote_correct: 0,
         vote_wrong: 0,
         vote_sum: 0,
-        score: []
+        score: '0 : 0'
     };
 
     // dropdown to select season
@@ -56,23 +57,23 @@ const MatchPage = () => {
 
     const { showError, showSuccess } = useContext(LayoutContext);
     const [matches, setMatches] = useState(null);
+    const [matchDetail, setMatchDetail] = useState(null);
     const [loading, setLoading] = useState(false);
     const [actionType, setActionType] = useState<string>('');
     const [chipsValue, setChipsValue] = useState<any[]>([]);
-    const [chapValue, setChapValue] = useState(0);
-    const [productDialog, setMatchDialog] = useState(false);
+    const [matchDialog, setMatchDialog] = useState(false);
+    const [matchDetailDialog, setMatchDetailDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [match, setMatch] = useState<Demo.Match>(emptyMatch);
     const [selectedProducts, setSelectedProducts] = useState(null);
     const [globalFilter, setGlobalFilter] = useState('');
     const toast = useRef<Toast>(null);
     const dt = useRef<DataTable<any>>(null);
-    const [selectedChap, setSelectedChap] = useState(0);
-    const [calendarValue, setCalendarValue] = useState<any>(null);
 
     useEffect(() => {
         setLoading(true);
         MatchService.getMatches().then((data) => setMatches(data as any));
+        MatchService.getMatchDetail().then((data) => setMatchDetail(data as any));
         // setTimeout(() => {
         setLoading(false);
         // }, 5000);
@@ -102,7 +103,9 @@ const MatchPage = () => {
     const saveMatch = () => {
         showSuccess('Thêm trận thành công');
         setMatchDialog(false);
-        setMatch(emptyMatch);
+        // setMatch(emptyMatch);
+
+        console.log(match);
     };
 
     const editMatch = (match: Demo.Match) => {
@@ -113,7 +116,8 @@ const MatchPage = () => {
 
     const viewMatch = (match: Demo.Match) => {
         setActionType('info');
-        setMatchDialog(true);
+        setMatch({ ...match });
+        setMatchDetailDialog(true);
     };
 
     const confirmDeleteItem = (match: Demo.Match) => {
@@ -129,46 +133,34 @@ const MatchPage = () => {
         showSuccess('Xoá trận thành công');
     };
 
-    const findIndexById = (id: string) => {
-        let index = -1;
-        for (let i = 0; i < (matches as any)?.length; i++) {
-            if ((matches as any)[i].id === id) {
-                index = i;
-                break;
-            }
-        }
-
-        return index;
-    };
-
-    const onCategoryChange = (e: RadioButtonChangeEvent) => {
-        let _match = { ...match };
-        _match['status'] = e.value;
-        setMatch(_match);
-    };
-
     const exportCSV = () => {
         dt.current?.exportCSV();
     };
 
-    // const onInputChange = (
-    //     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    //     match_name: string
-    // ) => {
-    //     const val = (e.target && e.target.value) || '';
-    //     let _match = { ...match };
-    //     _match[`${match_name}`] = val;
+    const onDateChange = (e: any) => {
+        let _match = { ...match };
+        _match['time'] = covertDateToString(e.target.value);
+        setMatch(_match);
+    };
 
-    //     setMatch(_match);
-    // };
+    const onInputTextChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        name: string
+    ) => {
+        const val = (e.target && e.target.value) || '';
+        let _match = { ...match };
+        _match[`${name}`] = val;
 
-    // const onInputNumberChange = (e: InputNumberValueChangeEvent, name: string) => {
-    //     const val = e.value || 0;
-    //     let _match = { ...match };
-    //     _match[`${name}`] = val;
+        setMatch(_match);
+    };
 
-    //     setMatch(_match);
-    // };
+    const onInputNumberChange = (e: InputNumberValueChangeEvent, name: string) => {
+        const val = e.value || 0;
+        let _match: Demo.Match = { ...match };
+        _match[`${name}`] = val;
+
+        setMatch(_match);
+    };
 
     const leftToolbar = () => {
         return (
@@ -234,7 +226,7 @@ const MatchPage = () => {
         return (
             <>
                 <span className="p-column-title">chap</span>
-                {rowData.chap as number}
+                {rowData.chap}
             </>
         );
     };
@@ -243,7 +235,7 @@ const MatchPage = () => {
         return (
             <>
                 <span className="p-column-title">time</span>
-                {rowData.time}
+                {formatDate(rowData.time)}
             </>
         );
     };
@@ -279,27 +271,7 @@ const MatchPage = () => {
         return (
             <>
                 <span className="p-column-title">score</span>
-                {rowData.score[0] + ' : ' + rowData.score[1]}
-            </>
-        );
-    };
-
-    const statusBody = (rowData: Demo.Match) => {
-        return (
-            <>
-                <span className="p-column-title">Status</span>
-                {/* sap dien ra: yellow, dang dien ra: green, da ket thuc: red */}
-                <span
-                    className={`match-badge status-${
-                        rowData.status === 'Sắp diễn ra'
-                            ? 'yellow'
-                            : rowData.status === 'Đang diễn ra'
-                            ? 'green'
-                            : 'red'
-                    }`}
-                >
-                    {rowData.status}
-                </span>
+                {rowData.score}
             </>
         );
     };
@@ -381,7 +353,7 @@ const MatchPage = () => {
                             header="Trận đấu"
                             sortable
                             body={matchNameBody}
-                            headerStyle={{ minWidth: '19rem' }}
+                            headerStyle={{ minWidth: '17rem' }}
                             align="center"
                         ></Column>
                         <Column
@@ -417,14 +389,6 @@ const MatchPage = () => {
                             align="center"
                         ></Column>
                         <Column
-                            field="status"
-                            header="Trạng thái"
-                            body={statusBody}
-                            sortable
-                            headerStyle={{ minWidth: '10rem' }}
-                            align="center"
-                        ></Column>
-                        <Column
                             field="vote_correct"
                             header="Vote đúng"
                             sortable
@@ -457,16 +421,11 @@ const MatchPage = () => {
                         ></Column>
                     </DataTable>
 
+                    {/* match detail dialog */}
                     <Dialog
-                        visible={productDialog}
+                        visible={matchDialog}
                         style={{ width: '450px' }}
-                        header={
-                            actionType === 'new'
-                                ? 'Tạo trận đấu'
-                                : actionType === 'edit'
-                                ? 'Chỉnh sửa trận đấu'
-                                : 'Thông tin chi tiết'
-                        }
+                        header={actionType === 'new' ? 'Tạo trận đấu' : 'Chỉnh sửa trận đấu'}
                         modal
                         className="p-fluid"
                         footer={
@@ -480,22 +439,17 @@ const MatchPage = () => {
                         {/* Ten tran dau */}
                         <div className="field">
                             <label htmlFor="name">Tên trận đấu</label>
-                            <InputText id="name" />
+                            <InputText id="name" value={match.name} />
                         </div>
-                        {/* {submitted && !match.team_a && (
-                                <small className="p-invalid">Name is required.</small>
-                            )} */}
 
-                        {/* date time */}
+                        {/* ti le chap */}
                         <div className="formgrid grid">
                             <div className="field col">
                                 <label htmlFor="chap">Tỉ lệ chấp</label>
-                                <InputNumber
-                                    inputId="chap"
-                                    value={chapValue}
-                                    onValueChange={(e) => setChapValue(e.value ?? 0)}
-                                    minFractionDigits={0}
-                                    maxFractionDigits={1}
+                                <InputText
+                                    id="chap"
+                                    value={match.chap}
+                                    onChange={(e) => onInputTextChange(e, 'chap')}
                                 />
                             </div>
 
@@ -505,7 +459,7 @@ const MatchPage = () => {
                                 <InputNumber
                                     id="money"
                                     value={match.money}
-                                    // onValueChange={(e) => onInputNumberChange(e, 'price')}
+                                    onValueChange={(e) => onInputNumberChange(e, 'money')}
                                     mode="currency"
                                     currency="VND"
                                     locale="vi-VN"
@@ -513,54 +467,19 @@ const MatchPage = () => {
                             </div>
                         </div>
 
+                        {/* time */}
                         <div className="field">
                             <label htmlFor="description">Thời điểm bóng lăn</label>
                             <Calendar
                                 showTime
                                 hourFormat="24"
                                 dateFormat="dd/mm/yy"
-                                value={calendarValue}
-                                onChange={(e) => setCalendarValue(e.value ?? null)}
+                                value={new Date(match.time)}
+                                onChange={(e) => onDateChange(e)}
                             />
                         </div>
 
-                        {/* status */}
-                        <div className="field">
-                            <label className="mb-3">Trạng thái</label>
-                            <div className="formgrid grid">
-                                <div className="field-radiobutton col-4">
-                                    <RadioButton
-                                        inputId="status1"
-                                        name="status"
-                                        value="Sắp diễn ra"
-                                        onChange={onCategoryChange}
-                                        checked={match.status === 'Sắp diễn ra'}
-                                    />
-                                    <label htmlFor="status1">Sắp diễn ra</label>
-                                </div>
-                                <div className="field-radiobutton col-4">
-                                    <RadioButton
-                                        inputId="status2"
-                                        name="status"
-                                        value="Đang diễn ra"
-                                        onChange={onCategoryChange}
-                                        checked={match.status === 'Đang diễn ra'}
-                                    />
-                                    <label htmlFor="status2">Đang diễn ra</label>
-                                </div>
-                                <div className="field-radiobutton col-4">
-                                    <RadioButton
-                                        inputId="status3"
-                                        name="status"
-                                        value="Đã kết thúc"
-                                        onChange={onCategoryChange}
-                                        checked={match.status === 'Đã kết thúc'}
-                                    />
-                                    <label htmlFor="status3">Đã kết thúc</label>
-                                </div>
-                            </div>
-                        </div>
-
+                        {/* option */}
                         <div className="field">
                             <label htmlFor="option" className="mb-3">
                                 Danh sách lựa chọn
@@ -571,6 +490,52 @@ const MatchPage = () => {
                                 onChange={(e) => setChipsValue(e.value ?? [])}
                             />
                         </div>
+
+                        <Divider />
+
+                        {/* cap nhat tran dau */}
+                        <div className="formgrid grid">
+                            <div className="field col">
+                                <label htmlFor="chap">Tỉ số</label>
+                                <InputText
+                                    id="chap"
+                                    value={match.score}
+                                    onChange={(e) => onInputTextChange(e, 'score')}
+                                />
+                            </div>
+
+                            {/* money */}
+                            <div className="field col">
+                                <label htmlFor="money">Lựa chọn đúng</label>
+                                <Chips
+                                    id="money"
+                                    value={chipsValue}
+                                    onChange={(e) => setChipsValue(e.value ?? [])}
+                                />
+                            </div>
+                        </div>
+                    </Dialog>
+
+                    {/* detail dialog */}
+                    <Dialog
+                        visible={matchDetailDialog}
+                        style={{ width: '750px' }}
+                        header={`${match.name} - ${formatDate(match.time)}`}
+                        modal
+                        onHide={() => setMatchDetailDialog(false)}
+                    >
+                        {matchDetail && (
+                            <DataTable
+                                value={matchDetail}
+                                tableStyle={{ minWidth: '50rem' }}
+                                emptyMessage="Không tìm thấy trận đấu"
+                            >
+                                <Column field="member_name" header="Người chơi"></Column>
+                                <Column field="vote_time" header="Thời gian vote"></Column>
+                                <Column field="member_option" header="Lựa chọn"></Column>
+                                <Column field="vote_status" header="Trạng thái"></Column>
+                            </DataTable>
+                        )}
                     </Dialog>
 
                     <ConfirmDialog
