@@ -9,8 +9,6 @@ import { DataTable } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
-import { Toolbar } from 'primereact/toolbar';
-import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { Chips } from 'primereact/chips';
 import { Divider } from 'primereact/divider';
@@ -19,14 +17,8 @@ import { Divider } from 'primereact/divider';
 import { Demo, CustomColumn } from '@/types';
 import { MatchService } from '@/demo/service/MatchService';
 import { LayoutContext } from '@/layout/context/layoutcontext';
-import { ConfirmDialog, CustomDataTable } from '@/components';
+import { ConfirmDialog, CustomDataTable, CustomToolbar } from '@/components';
 import { formatDate, covertDateToString } from '@/utils/format';
-
-// type
-interface InputValue {
-    index: number;
-    name: string;
-}
 
 // ========================|| Match page ||========================
 /* @todo Used 'as any' for types here. Will fix in next version due to onSelectionChange event type issue. */
@@ -43,15 +35,6 @@ const MatchManagePage = () => {
         vote_sum: 0,
         score: '0 : 0'
     };
-
-    // dropdown to select season
-    const [selectedSeason, setSelectedSeason] = useState(0);
-
-    const matchValues: InputValue[] = [
-        { name: 'EURO 2024', index: 0 },
-        { name: 'Champions League 2023', index: 1 },
-        { name: 'World Cup 2022', index: 2 }
-    ];
 
     const dt = useRef<DataTable<any>>(null);
     const { showSuccess } = useContext(LayoutContext);
@@ -82,7 +65,7 @@ const MatchManagePage = () => {
         });
     };
 
-    const openNew = () => {
+    const handleOpenNew = () => {
         setActionType('new');
         setMatch(emptyMatch);
         setMatchDialog(true);
@@ -152,43 +135,6 @@ const MatchManagePage = () => {
         _match[`${name}`] = val;
 
         setMatch(_match);
-    };
-
-    const exportCSV = () => {
-        dt.current?.exportCSV();
-    };
-
-    const leftToolbar = () => {
-        return (
-            <>
-                <div className="my-2">
-                    <Dropdown
-                        className="w-full md:w-18rem"
-                        value={selectedSeason}
-                        options={matchValues}
-                        onChange={(e) => setSelectedSeason(e.value)}
-                        optionValue="index"
-                        optionLabel="name"
-                        placeholder="Select"
-                    />
-                </div>
-            </>
-        );
-    };
-
-    const rightToolbar = () => {
-        return (
-            <>
-                <Button
-                    label="Thêm"
-                    icon="pi pi-plus"
-                    severity="success"
-                    onClick={openNew}
-                    className="mr-2 inline-block"
-                />
-                <Button label="Xuất" icon="pi pi-upload" severity="help" onClick={exportCSV} />
-            </>
-        );
     };
 
     const matchNameBody = (rowData: Demo.Match) => {
@@ -318,7 +264,7 @@ const MatchManagePage = () => {
         <div className="grid crud-demo">
             <div className="col-12">
                 <div className="card">
-                    <Toolbar className="mb-4" start={leftToolbar} end={rightToolbar}></Toolbar>
+                    <CustomToolbar dt={dt} onAdd={handleOpenNew} />
 
                     <CustomDataTable
                         tableName="Danh sách trận đấu"

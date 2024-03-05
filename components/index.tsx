@@ -3,3 +3,4 @@ export { default as LoadingScreen } from './loadingScreen';
 export { default as ToastMessage } from './toastMessage';
 export { default as PrivateRoute } from './privateRoute';
 export { default as CustomDataTable } from './customDataTable';
+export { default as CustomToolbar } from './customToolbar';
