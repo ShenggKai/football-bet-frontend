@@ -30,7 +30,7 @@ interface InputValue {
 
 // ========================|| Match page ||========================
 /* @todo Used 'as any' for types here. Will fix in next version due to onSelectionChange event type issue. */
-const MatchPage = () => {
+const MatchManagePage = () => {
     let emptyMatch: Demo.Match = {
         id: 0,
         chap: '0',
@@ -462,4 +462,4 @@ const MatchPage = () => {
     );
 };
 
-export default MatchPage;
+export default MatchManagePage;
