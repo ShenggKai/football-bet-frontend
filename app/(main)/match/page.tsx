@@ -9,7 +9,6 @@ import { DataTable } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
-import { Toast } from 'primereact/toast';
 import { Toolbar } from 'primereact/toolbar';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
@@ -17,10 +16,10 @@ import { Chips } from 'primereact/chips';
 import { Divider } from 'primereact/divider';
 
 // project import
-import { Demo } from '@/types';
+import { Demo, CustomColumn } from '@/types';
 import { MatchService } from '@/demo/service/MatchService';
 import { LayoutContext } from '@/layout/context/layoutcontext';
-import { ConfirmDialog } from '@/components';
+import { ConfirmDialog, CustomDataTable } from '@/components';
 import { formatDate, covertDateToString } from '@/utils/format';
 
 // type
@@ -38,7 +37,6 @@ const MatchPage = () => {
         name: '',
         money: 0,
         time: covertDateToString(new Date()),
-        status: 'Sắp diễn ra',
         options: [],
         vote_correct: 0,
         vote_wrong: 0,
@@ -55,20 +53,18 @@ const MatchPage = () => {
         { name: 'World Cup 2022', index: 2 }
     ];
 
-    const { showError, showSuccess } = useContext(LayoutContext);
+    const dt = useRef<DataTable<any>>(null);
+    const { showSuccess } = useContext(LayoutContext);
     const [matches, setMatches] = useState(null);
     const [matchDetail, setMatchDetail] = useState(null);
     const [loading, setLoading] = useState(false);
     const [actionType, setActionType] = useState<string>('');
     const [chipsValue, setChipsValue] = useState<any[]>([]);
+    const [chipsValue2, setChipsValue2] = useState<any[]>([]);
     const [matchDialog, setMatchDialog] = useState(false);
     const [matchDetailDialog, setMatchDetailDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [match, setMatch] = useState<Demo.Match>(emptyMatch);
-    const [selectedProducts, setSelectedProducts] = useState(null);
-    const [globalFilter, setGlobalFilter] = useState('');
-    const toast = useRef<Toast>(null);
-    const dt = useRef<DataTable<any>>(null);
 
     useEffect(() => {
         setLoading(true);
@@ -133,10 +129,6 @@ const MatchPage = () => {
         showSuccess('Xoá trận thành công');
     };
 
-    const exportCSV = () => {
-        dt.current?.exportCSV();
-    };
-
     const onDateChange = (e: any) => {
         let _match = { ...match };
         _match['time'] = covertDateToString(e.target.value);
@@ -160,6 +152,10 @@ const MatchPage = () => {
         _match[`${name}`] = val;
 
         setMatch(_match);
+    };
+
+    const exportCSV = () => {
+        dt.current?.exportCSV();
     };
 
     const leftToolbar = () => {
@@ -191,15 +187,6 @@ const MatchPage = () => {
                     className="mr-2 inline-block"
                 />
                 <Button label="Xuất" icon="pi pi-upload" severity="help" onClick={exportCSV} />
-            </>
-        );
-    };
-
-    const indexBody = (data: any, props: any) => {
-        let index = parseInt(props.rowIndex + 1);
-        return (
-            <>
-                <span>{index}</span>
             </>
         );
     };
@@ -276,150 +263,73 @@ const MatchPage = () => {
         );
     };
 
-    const actionBody = (rowData: Demo.Match) => {
-        return (
-            <>
-                <Button
-                    icon="pi pi-info"
-                    rounded
-                    text
-                    severity="info"
-                    className="mr-2"
-                    onClick={() => viewMatch(rowData)}
-                />
-                <Button
-                    icon="pi pi-pencil"
-                    rounded
-                    text
-                    severity="success"
-                    className="mr-2"
-                    onClick={() => editMatch(rowData)}
-                />
-                <Button
-                    icon="pi pi-trash"
-                    rounded
-                    text
-                    severity="warning"
-                    onClick={() => confirmDeleteItem(rowData)}
-                />
-            </>
-        );
-    };
-
-    const header = (
-        <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Danh sách trận đấu</h5>
-            <span className="block mt-2 md:mt-0 p-input-icon-left">
-                <i className="pi pi-search" />
-                <InputText
-                    type="search"
-                    onInput={(e) => console.log(e.currentTarget.value)}
-                    placeholder="Tìm kiếm"
-                />
-            </span>
-        </div>
-    );
+    const customColumn: CustomColumn[] = [
+        {
+            field: 'name',
+            header: 'Trận đấu',
+            body: matchNameBody,
+            minWidth: '17rem'
+        },
+        {
+            field: 'chap',
+            header: 'Tỉ lệ chấp',
+            body: chapBody,
+            minWidth: '9rem'
+        },
+        {
+            field: 'money',
+            header: 'Số tiền',
+            body: moneyBody,
+            minWidth: '10rem'
+        },
+        {
+            field: 'time',
+            header: 'Giờ bóng lăn',
+            body: timeBody,
+            minWidth: '12rem'
+        },
+        {
+            field: 'score',
+            header: 'Tỉ số',
+            body: scoreBody,
+            minWidth: '6rem'
+        },
+        {
+            field: 'vote_correct',
+            header: 'Vote đúng',
+            body: voteCorrectBody,
+            minWidth: '9rem'
+        },
+        {
+            field: 'vote_wrong',
+            header: 'Vote sai',
+            body: voteWrongBody,
+            minWidth: '8rem'
+        },
+        {
+            field: 'vote_sum',
+            header: 'Tổng vote',
+            body: voteSumBody,
+            minWidth: '9rem'
+        }
+    ];
 
     return (
         <div className="grid crud-demo">
             <div className="col-12">
                 <div className="card">
-                    <Toast ref={toast} />
                     <Toolbar className="mb-4" start={leftToolbar} end={rightToolbar}></Toolbar>
 
-                    <DataTable
-                        ref={dt}
-                        value={matches}
-                        selectionMode="single"
-                        selection={selectedProducts}
-                        onSelectionChange={(e) => setSelectedProducts(e.value as any)}
-                        dataKey="id"
-                        loading={loading}
-                        paginator
-                        scrollable
-                        removableSort
-                        rows={5}
-                        rowsPerPageOptions={[5, 10, 25, 50]}
-                        className="datatable-responsive"
-                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Hiển thị {first} đến {last} trong {totalRecords} trận đấu"
-                        globalFilter={globalFilter}
-                        emptyMessage="Không tìm thấy trận đấu"
-                        header={header}
-                    >
-                        <Column header="STT" body={indexBody} align={'center'}></Column>
-                        <Column
-                            field="name"
-                            header="Trận đấu"
-                            sortable
-                            body={matchNameBody}
-                            headerStyle={{ minWidth: '17rem' }}
-                            align="center"
-                        ></Column>
-                        <Column
-                            field="chap"
-                            header="Tỉ lệ chấp"
-                            sortable
-                            body={chapBody}
-                            headerStyle={{ minWidth: '9rem' }}
-                            align="center"
-                        ></Column>
-                        <Column
-                            field="money"
-                            header="Số tiền"
-                            body={moneyBody}
-                            sortable
-                            headerStyle={{ minWidth: '10rem' }}
-                            align="center"
-                        ></Column>
-                        <Column
-                            field="time"
-                            header="Giờ bóng lăn"
-                            sortable
-                            body={timeBody}
-                            headerStyle={{ minWidth: '12rem' }}
-                            align="center"
-                        ></Column>
-                        <Column
-                            field="score"
-                            header="Tỉ số"
-                            sortable
-                            body={scoreBody}
-                            headerStyle={{ minWidth: '6rem' }}
-                            align="center"
-                        ></Column>
-                        <Column
-                            field="vote_correct"
-                            header="Vote đúng"
-                            sortable
-                            body={voteCorrectBody}
-                            headerStyle={{ minWidth: '9rem' }}
-                            align="center"
-                        ></Column>
-                        <Column
-                            field="vote_wrong"
-                            header="Vote sai"
-                            sortable
-                            body={voteWrongBody}
-                            headerStyle={{ minWidth: '8rem' }}
-                            align="center"
-                        ></Column>
-                        <Column
-                            field="vote_sum"
-                            header="Tổng vote"
-                            sortable
-                            body={voteSumBody}
-                            headerStyle={{ minWidth: '9rem' }}
-                            align="center"
-                        ></Column>
-                        <Column
-                            body={actionBody}
-                            headerStyle={{ minWidth: '12rem' }}
-                            frozen
-                            alignFrozen="right"
-                            align="center"
-                        ></Column>
-                    </DataTable>
+                    <CustomDataTable
+                        tableName="Danh sách trận đấu"
+                        data={matches}
+                        dt={dt}
+                        customColumn={customColumn}
+                        isLoading={loading}
+                        onView={viewMatch}
+                        onEdit={editMatch}
+                        onDelete={confirmDeleteItem}
+                    />
 
                     {/* match detail dialog */}
                     <Dialog
@@ -495,10 +405,11 @@ const MatchPage = () => {
 
                         {/* cap nhat tran dau */}
                         <div className="formgrid grid">
+                            {/* ti so */}
                             <div className="field col">
-                                <label htmlFor="chap">Tỉ số</label>
+                                <label htmlFor="score">Tỉ số</label>
                                 <InputText
-                                    id="chap"
+                                    id="score"
                                     value={match.score}
                                     onChange={(e) => onInputTextChange(e, 'score')}
                                 />
@@ -509,8 +420,8 @@ const MatchPage = () => {
                                 <label htmlFor="money">Lựa chọn đúng</label>
                                 <Chips
                                     id="money"
-                                    value={chipsValue}
-                                    onChange={(e) => setChipsValue(e.value ?? [])}
+                                    value={chipsValue2}
+                                    onChange={(e) => setChipsValue2(e.value ?? [])}
                                 />
                             </div>
                         </div>
