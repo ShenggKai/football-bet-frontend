@@ -41,15 +41,15 @@ const AppMenu = () => {
             ]
         },
         {
-            label: 'MINI GAME',
+            label: 'MINIGAME',
             items: [
-                { label: 'Quản lý mini game', icon: 'pi pi-fw pi-star', to: '/minigame/manage' },
+                { label: 'Quản lý minigame', icon: 'pi pi-fw pi-star', to: '/minigame/manage' },
                 {
                     label: 'Báo cáo',
                     icon: 'pi pi-fw pi-chart-bar',
                     items: [
                         {
-                            label: 'Chi tiết mini game',
+                            label: 'Chi tiết minigame',
                             icon: 'pi pi-fw pi-chart-line',
                             to: '/minigame/report-minigame'
                         },
@@ -73,7 +73,7 @@ const AppMenu = () => {
             label: 'Dự đoán',
             items: [
                 { label: 'Trận đấu', icon: 'pi pi-fw pi-sitemap', to: '/' },
-                { label: 'Mini game', icon: 'pi pi-fw pi-star', to: '/uikit/misc' }
+                { label: 'Minigame', icon: 'pi pi-fw pi-star', to: '/uikit/misc' }
             ]
         },
         {
