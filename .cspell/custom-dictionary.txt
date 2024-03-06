@@ -17,6 +17,7 @@ diễn
 doanh
 dùng
 Được
+FIFA
 fileupload
 formgrid
 formik
@@ -40,6 +41,7 @@ lòng
 menubutton
 menucontext
 minigame
+Minigames
 MobiFone
 mừng
 muốn
