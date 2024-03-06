@@ -1,7 +1,18 @@
-import React, { ReactElement, Dispatch, SetStateAction, HTMLAttributeAnchorTarget, ReactNode } from 'react';
+import React, {
+    ReactElement,
+    Dispatch,
+    SetStateAction,
+    HTMLAttributeAnchorTarget,
+    ReactNode
+} from 'react';
+
+// Next.js
 import { NextPage } from 'next';
-import { Demo } from './demo';
+// PrimeReact
 import { Toast } from 'primereact/toast';
+
+// project import
+import { Demo } from '@types/demo';
 
 /* Breadcrumb Types */
 export interface AppBreadcrumbProps {
@@ -24,9 +35,9 @@ export type LayoutState = {
     staticMenuDesktopInactive: boolean;
     overlayMenuActive: boolean;
     profileSidebarVisible: boolean;
-    configSidebarVisible: boolean;
     staticMenuMobileActive: boolean;
     menuHoverActive: boolean;
+    isLoading: boolean;
 };
 
 export type LayoutConfig = {
@@ -45,6 +56,12 @@ export interface LayoutContextProps {
     setLayoutState: Dispatch<SetStateAction<LayoutState>>;
     onMenuToggle: () => void;
     showProfileSidebar: () => void;
+    toggleTheme: () => void;
+    setIsLoading: (boolean) => void;
+    showSuccess: (string) => void;
+    showInfo: (string) => void;
+    showWarn: (string) => void;
+    showError: (string) => void;
 }
 
 export interface MenuContextProps {

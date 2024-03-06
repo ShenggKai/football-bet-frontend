@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -132,7 +132,14 @@ const FormLayoutDemo = () => {
                         </div>
                         <div className="field col-12 md:col-3">
                             <label htmlFor="state">State</label>
-                            <Dropdown id="state" value={dropdownItem} onChange={(e) => setDropdownItem(e.value)} options={dropdownItems} optionLabel="name" placeholder="Select One"></Dropdown>
+                            <Dropdown
+                                id="state"
+                                value={dropdownItem}
+                                onChange={(e) => setDropdownItem(e.value)}
+                                options={dropdownItems}
+                                optionLabel="name"
+                                placeholder="Select One"
+                            ></Dropdown>
                         </div>
                         <div className="field col-12 md:col-3">
                             <label htmlFor="zip">Zip</label>

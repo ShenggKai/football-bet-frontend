@@ -1,9 +1,10 @@
+// Next.js
 import { Metadata } from 'next';
-import Layout from '../../layout/layout';
 
-interface AppLayoutProps {
-    children: React.ReactNode;
-}
+// project import
+import Layout from '@/layout/layout';
+import { PrivateRoute } from '@/components';
+import { ChildContainerProps } from '@/types';
 
 export const metadata: Metadata = {
     title: 'Trổ Tài Dự Đoán',
@@ -15,7 +16,9 @@ export const metadata: Metadata = {
         title: 'Trổ Tài Dự Đoán',
         url: '',
         description: 'Trang web dự đoán thể thao',
-        images: ['https://www.primefaces.org/static/social/sakai-react.png'],
+        images: [
+            'https://github.com/ShenggKai/football-bet-frontend/blob/master/public/images/logo.png?raw=true'
+        ],
         ttl: 604800
     },
     icons: {
@@ -23,6 +26,11 @@ export const metadata: Metadata = {
     }
 };
 
-export default function AppLayout({ children }: AppLayoutProps) {
-    return <Layout>{children}</Layout>;
+// ========================|| Main app layout ||========================
+export default function AppLayout({ children }: ChildContainerProps) {
+    return (
+        <Layout>
+            <PrivateRoute>{children}</PrivateRoute>
+        </Layout>
+    );
 }

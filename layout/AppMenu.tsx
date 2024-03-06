@@ -1,180 +1,123 @@
-/* eslint-disable @next/next/no-img-element */
-
-import React, { useContext } from 'react';
-import AppMenuitem from './AppMenuitem';
-import { LayoutContext } from './context/layoutcontext';
-import { MenuProvider } from './context/menucontext';
-import Link from 'next/link';
+// project import
 import { AppMenuItem } from '@/types';
+import { useAppSelector } from '@/redux/store';
+import { MenuProvider } from '@/layout/context/menucontext';
+import AppMenuitem from '@/layout/AppMenuitem';
 
+// ========================|| App menu ||========================
 const AppMenu = () => {
-    const { layoutConfig } = useContext(LayoutContext);
+    // get user's role
+    const roleName = useAppSelector((state) => state.auth.roleName);
 
-    const model: AppMenuItem[] = [
+    const adminMenu = [
         {
-            label: 'Home',
-            items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
-        },
-        {
-            label: 'UI Components',
+            label: 'QUẢN TRỊ HỆ THỐNG',
             items: [
-                { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
-                { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
-                { label: 'Float Label', icon: 'pi pi-fw pi-bookmark', to: '/uikit/floatlabel' },
-                { label: 'Invalid State', icon: 'pi pi-fw pi-exclamation-circle', to: '/uikit/invalidstate' },
-                { label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/uikit/button', class: 'rotated-icon' },
-                { label: 'Table', icon: 'pi pi-fw pi-table', to: '/uikit/table' },
-                { label: 'List', icon: 'pi pi-fw pi-list', to: '/uikit/list' },
-                { label: 'Tree', icon: 'pi pi-fw pi-share-alt', to: '/uikit/tree' },
-                { label: 'Panel', icon: 'pi pi-fw pi-tablet', to: '/uikit/panel' },
-                { label: 'Overlay', icon: 'pi pi-fw pi-clone', to: '/uikit/overlay' },
-                { label: 'Media', icon: 'pi pi-fw pi-image', to: '/uikit/media' },
-                { label: 'Menu', icon: 'pi pi-fw pi-bars', to: '/uikit/menu', preventExact: true },
-                { label: 'Message', icon: 'pi pi-fw pi-comment', to: '/uikit/message' },
-                { label: 'File', icon: 'pi pi-fw pi-file', to: '/uikit/file' },
-                { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', to: '/uikit/charts' },
-                { label: 'Misc', icon: 'pi pi-fw pi-circle', to: '/uikit/misc' }
+                { label: 'Người dùng', icon: 'pi pi-fw pi-user-edit', to: '/' },
+                { label: 'Mùa giải', icon: 'pi pi-fw pi-globe', to: '/uikit/misc' },
+                { label: 'Người chơi mùa giải', icon: 'pi pi-fw pi-users', to: '/uikit/menu' }
             ]
         },
         {
-            label: 'Prime Blocks',
+            label: 'TRẬN ĐẤU',
             items: [
-                { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', to: '/blocks', badge: 'NEW' },
-                { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: 'https://blocks.primereact.org', target: '_blank' }
-            ]
-        },
-        {
-            label: 'Utilities',
-            items: [
-                { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', to: '/utilities/icons' },
-                { label: 'PrimeFlex', icon: 'pi pi-fw pi-desktop', url: 'https://primeflex.org/', target: '_blank' }
-            ]
-        },
-        {
-            label: 'Pages',
-            icon: 'pi pi-fw pi-briefcase',
-            to: '/pages',
-            items: [
+                { label: 'Quản lý trận đấu', icon: 'pi pi-fw pi-sitemap', to: '/match/manage' },
                 {
-                    label: 'Landing',
-                    icon: 'pi pi-fw pi-globe',
-                    to: '/landing'
-                },
-                {
-                    label: 'Auth',
-                    icon: 'pi pi-fw pi-user',
+                    label: 'Báo cáo',
+                    icon: 'pi pi-fw pi-chart-bar',
                     items: [
                         {
-                            label: 'Login',
-                            icon: 'pi pi-fw pi-sign-in',
-                            to: '/auth/login'
+                            label: 'Chi tiết trận đấu',
+                            icon: 'pi pi-fw pi-chart-line',
+                            to: '/match/report-match'
                         },
                         {
-                            label: 'Error',
-                            icon: 'pi pi-fw pi-times-circle',
-                            to: '/auth/error'
-                        },
-                        {
-                            label: 'Access Denied',
-                            icon: 'pi pi-fw pi-lock',
-                            to: '/auth/access'
-                        }
-                    ]
-                },
-                {
-                    label: 'Crud',
-                    icon: 'pi pi-fw pi-pencil',
-                    to: '/pages/crud'
-                },
-                {
-                    label: 'Timeline',
-                    icon: 'pi pi-fw pi-calendar',
-                    to: '/pages/timeline'
-                },
-                {
-                    label: 'Not Found',
-                    icon: 'pi pi-fw pi-exclamation-circle',
-                    to: '/pages/notfound'
-                },
-                {
-                    label: 'Empty',
-                    icon: 'pi pi-fw pi-circle-off',
-                    to: '/pages/empty'
-                }
-            ]
-        },
-        {
-            label: 'Hierarchy',
-            items: [
-                {
-                    label: 'Submenu 1',
-                    icon: 'pi pi-fw pi-bookmark',
-                    items: [
-                        {
-                            label: 'Submenu 1.1',
-                            icon: 'pi pi-fw pi-bookmark',
-                            items: [
-                                { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' }
-                            ]
-                        },
-                        {
-                            label: 'Submenu 1.2',
-                            icon: 'pi pi-fw pi-bookmark',
-                            items: [{ label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' }]
-                        }
-                    ]
-                },
-                {
-                    label: 'Submenu 2',
-                    icon: 'pi pi-fw pi-bookmark',
-                    items: [
-                        {
-                            label: 'Submenu 2.1',
-                            icon: 'pi pi-fw pi-bookmark',
-                            items: [
-                                { label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                { label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark' }
-                            ]
-                        },
-                        {
-                            label: 'Submenu 2.2',
-                            icon: 'pi pi-fw pi-bookmark',
-                            items: [{ label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark' }]
+                            label: 'Tổng hợp',
+                            icon: 'pi pi-fw pi-chart-pie',
+                            to: '/match/report'
                         }
                     ]
                 }
             ]
         },
         {
-            label: 'Get Started',
+            label: 'MINIGAME',
+            items: [
+                { label: 'Quản lý minigame', icon: 'pi pi-fw pi-star', to: '/minigame/manage' },
+                {
+                    label: 'Báo cáo',
+                    icon: 'pi pi-fw pi-chart-bar',
+                    items: [
+                        {
+                            label: 'Chi tiết minigame',
+                            icon: 'pi pi-fw pi-chart-line',
+                            to: '/minigame/report-minigame'
+                        },
+                        {
+                            label: 'Tổng hợp',
+                            icon: 'pi pi-fw pi-chart-pie',
+                            to: '/minigame/report'
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            label: 'KHÁC',
+            items: [{ label: 'Hướng dẫn chơi', icon: 'pi pi-fw pi-question', to: '/uikit/misc' }]
+        }
+    ];
+
+    const memberMenu = [
+        {
+            label: 'Dự đoán',
+            items: [
+                { label: 'Trận đấu', icon: 'pi pi-fw pi-sitemap', to: '/' },
+                { label: 'Minigame', icon: 'pi pi-fw pi-star', to: '/uikit/misc' }
+            ]
+        },
+        {
+            label: 'Khác',
             items: [
                 {
-                    label: 'Documentation',
+                    label: 'Hướng dẫn chơi',
                     icon: 'pi pi-fw pi-question',
-                    to: '/documentation'
+                    to: '/uikit/input'
                 },
+                { label: 'Tài khoản', icon: 'pi pi-fw pi-user', to: '/user/member' }
+            ]
+        }
+    ];
+
+    const menuError = [
+        {
+            label: 'Lỗi',
+            items: [
                 {
-                    label: 'View Source',
-                    icon: 'pi pi-fw pi-search',
-                    url: 'https://github.com/primefaces/sakai-react',
-                    target: '_blank'
+                    label: 'Không có quyền truy cập',
+                    icon: 'pi pi-fw pi-times-circle',
+                    to: '/auth/login'
                 }
             ]
         }
     ];
 
+    // show menu base on user's role
+    let appMenu: AppMenuItem[] = [];
+    if (roleName === 'admin') appMenu = adminMenu;
+    else if (roleName === 'member') appMenu = memberMenu;
+    else appMenu = menuError;
+
     return (
         <MenuProvider>
             <ul className="layout-menu">
-                {model.map((item, i) => {
-                    return !item?.seperator ? <AppMenuitem item={item} root={true} index={i} key={item.label} /> : <li className="menu-separator"></li>;
+                {appMenu.map((item, i) => {
+                    return !item?.seperator ? (
+                        <AppMenuitem item={item} root={true} index={i} key={item.label} />
+                    ) : (
+                        <li className="menu-separator"></li>
+                    );
                 })}
-
-                <Link href="https://blocks.primereact.org" target="_blank" style={{ cursor: 'pointer' }}>
-                    <img alt="Prime Blocks" className="w-full mt-3" src={`/layout/images/banner-primeblocks${layoutConfig.colorScheme === 'light' ? '' : '-dark'}.png`} />
-                </Link>
             </ul>
         </MenuProvider>
     );

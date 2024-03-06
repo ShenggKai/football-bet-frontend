@@ -1,16 +1,13 @@
-/* eslint-disable @next/next/no-img-element */
-
-import React, { useContext } from 'react';
-import { LayoutContext } from './context/layoutcontext';
-
+// ========================|| App footer ||========================
 const AppFooter = () => {
-    const { layoutConfig } = useContext(LayoutContext);
-
     return (
         <div className="layout-footer">
-            <img src={`/layout/images/logo-${layoutConfig.colorScheme === 'light' ? 'dark' : 'white'}.svg`} alt="Logo" height="20" className="mr-2" />
-            by
-            <span className="font-medium ml-2">PrimeReact</span>
+            <img src={'/images/logo.svg'} alt="Logo" height="20" className="mr-2" />
+            Hỗ trợ kỹ thuật
+            <span className="ml-5">Email:</span>
+            <span className="font-medium ml-1">product.mbf2@gmail.com</span>
+            <span className="ml-5">Hotline:</span>
+            <span className="font-medium ml-1">0934097916</span>
         </div>
     );
 };

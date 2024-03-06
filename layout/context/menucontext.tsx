@@ -1,8 +1,12 @@
-import React, { useState, createContext } from 'react';
+import { useState, createContext } from 'react';
+
+// project import
 import { ChildContainerProps, MenuContextProps } from '@/types';
 
+// ========================|| Menu context ||========================
 export const MenuContext = createContext({} as MenuContextProps);
 
+// ========================|| Menu provider ||========================
 export const MenuProvider = ({ children }: ChildContainerProps) => {
     const [activeMenu, setActiveMenu] = useState('');
 

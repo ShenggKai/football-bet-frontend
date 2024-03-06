@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SplitButton } from 'primereact/splitbutton';
 import { Button } from 'primereact/button';
 import styles from './index.module.scss';
@@ -122,34 +122,74 @@ const ButtonDemo = () => {
                 <div className="card">
                     <h5>SplitButton</h5>
                     <div className="flex flex-wrap gap-2">
-                        <SplitButton label="Save" icon="pi pi-check" model={items} severity="secondary"></SplitButton>
-                        <SplitButton label="Save" icon="pi pi-check" model={items} severity="success"></SplitButton>
-                        <SplitButton label="Save" icon="pi pi-check" model={items} severity="info"></SplitButton>
-                        <SplitButton label="Save" icon="pi pi-check" model={items} severity="warning"></SplitButton>
-                        <SplitButton label="Save" icon="pi pi-check" model={items} severity="danger"></SplitButton>
+                        <SplitButton
+                            label="Save"
+                            icon="pi pi-check"
+                            model={items}
+                            severity="secondary"
+                        ></SplitButton>
+                        <SplitButton
+                            label="Save"
+                            icon="pi pi-check"
+                            model={items}
+                            severity="success"
+                        ></SplitButton>
+                        <SplitButton
+                            label="Save"
+                            icon="pi pi-check"
+                            model={items}
+                            severity="info"
+                        ></SplitButton>
+                        <SplitButton
+                            label="Save"
+                            icon="pi pi-check"
+                            model={items}
+                            severity="warning"
+                        ></SplitButton>
+                        <SplitButton
+                            label="Save"
+                            icon="pi pi-check"
+                            model={items}
+                            severity="danger"
+                        ></SplitButton>
                     </div>
                 </div>
 
                 <div className="card">
                     <h5>Template</h5>
                     <div className="flex flex-wrap gap-2">
-                        <Button className={classNames(styles['p-button'], styles['google'])} aria-label="Google">
+                        <Button
+                            className={classNames(styles['p-button'], styles['google'])}
+                            aria-label="Google"
+                        >
                             <span className="flex align-items-center px-2 bg-purple-700 text-white">
                                 <i className="pi pi-google"></i>
                             </span>
-                            <span className="px-3 py-2 flex align-items-center text-white">Google</span>
+                            <span className="px-3 py-2 flex align-items-center text-white">
+                                Google
+                            </span>
                         </Button>
-                        <Button className={classNames(styles['p-button'], styles['twitter'])} aria-label="Twitter">
+                        <Button
+                            className={classNames(styles['p-button'], styles['twitter'])}
+                            aria-label="Twitter"
+                        >
                             <span className="flex align-items-center px-2 bg-blue-500 text-white">
                                 <i className="pi pi-twitter"></i>
                             </span>
-                            <span className="px-3 py-2 flex align-items-center text-white">Twitter</span>
+                            <span className="px-3 py-2 flex align-items-center text-white">
+                                Twitter
+                            </span>
                         </Button>
-                        <Button className={classNames(styles['p-button'], styles['discord'])} aria-label="Discord">
+                        <Button
+                            className={classNames(styles['p-button'], styles['discord'])}
+                            aria-label="Discord"
+                        >
                             <span className="flex align-items-center px-2 bg-bluegray-800 text-white">
                                 <i className="pi pi-discord"></i>
                             </span>
-                            <span className="px-3 py-2 flex align-items-center text-white">Discord</span>
+                            <span className="px-3 py-2 flex align-items-center text-white">
+                                Discord
+                            </span>
                         </Button>
                     </div>
                 </div>
@@ -234,8 +274,19 @@ const ButtonDemo = () => {
                 <div className="card">
                     <h5>Loading</h5>
                     <div className="flex flex-wrap gap-2">
-                        <Button label="Search" icon="pi pi-search" loading={loading1} onClick={onLoadingClick1} />
-                        <Button label="Search" icon="pi pi-search" iconPos="right" loading={loading2} onClick={onLoadingClick2} />
+                        <Button
+                            label="Search"
+                            icon="pi pi-search"
+                            loading={loading1}
+                            onClick={onLoadingClick1}
+                        />
+                        <Button
+                            label="Search"
+                            icon="pi pi-search"
+                            iconPos="right"
+                            loading={loading2}
+                            onClick={onLoadingClick2}
+                        />
                         <Button icon="pi pi-search" loading={loading3} onClick={onLoadingClick3} />
                         <Button label="Search" loading={loading4} onClick={onLoadingClick4} />
                     </div>
