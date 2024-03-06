@@ -17,3 +17,10 @@ export function covertDateToString(date: Date) {
 
     return `${year}/${month}/${day} ${hours}:${minutes}`;
 }
+
+export function formatCurrency(value: number) {
+    return value.toLocaleString('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    });
+}

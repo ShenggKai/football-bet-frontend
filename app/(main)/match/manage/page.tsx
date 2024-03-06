@@ -18,7 +18,7 @@ import { Demo, CustomColumn } from '@/types';
 import { MatchService } from '@/demo/service/MatchService';
 import { LayoutContext } from '@/layout/context/layoutcontext';
 import { ConfirmDialog, CustomDataTable, CustomToolbar } from '@/components';
-import { formatDate, covertDateToString } from '@/utils/format';
+import { formatDate, covertDateToString, formatCurrency } from '@/utils/format';
 
 // ========================|| Match page ||========================
 /* @todo Used 'as any' for types here. Will fix in next version due to onSelectionChange event type issue. */
@@ -39,6 +39,7 @@ const MatchManagePage = () => {
     const dt = useRef<DataTable<any>>(null);
     const { showSuccess } = useContext(LayoutContext);
     const [matches, setMatches] = useState(null);
+    const [match, setMatch] = useState<Demo.Match>(emptyMatch);
     const [matchDetail, setMatchDetail] = useState(null);
     const [loading, setLoading] = useState(false);
     const [actionType, setActionType] = useState<string>('');
@@ -46,8 +47,7 @@ const MatchManagePage = () => {
     const [chipsValue2, setChipsValue2] = useState<any[]>([]);
     const [matchDialog, setMatchDialog] = useState(false);
     const [matchDetailDialog, setMatchDetailDialog] = useState(false);
-    const [deleteProductDialog, setDeleteProductDialog] = useState(false);
-    const [match, setMatch] = useState<Demo.Match>(emptyMatch);
+    const [deleteDialog, setDeleteDialog] = useState(false);
 
     useEffect(() => {
         setLoading(true);
@@ -58,25 +58,10 @@ const MatchManagePage = () => {
         // }, 5000);
     }, []);
 
-    const formatCurrency = (value: number) => {
-        return value.toLocaleString('vi-VN', {
-            style: 'currency',
-            currency: 'VND'
-        });
-    };
-
     const handleOpenNew = () => {
         setActionType('new');
         setMatch(emptyMatch);
         setMatchDialog(true);
-    };
-
-    const hideDialog = () => {
-        setMatchDialog(false);
-    };
-
-    const hideDeleteProductDialog = () => {
-        setDeleteProductDialog(false);
     };
 
     const saveMatch = () => {
@@ -101,13 +86,13 @@ const MatchManagePage = () => {
 
     const confirmDeleteItem = (match: Demo.Match) => {
         setMatch(match);
-        setDeleteProductDialog(true);
+        setDeleteDialog(true);
     };
 
     const deleteItem = () => {
         let _products = (matches as any)?.filter((val: any) => val.id !== match.id);
         setMatches(_products);
-        setDeleteProductDialog(false);
+        setDeleteDialog(false);
         setMatch(emptyMatch);
         showSuccess('Xoá trận thành công');
     };
@@ -137,7 +122,7 @@ const MatchManagePage = () => {
         setMatch(_match);
     };
 
-    // main table row
+    // main table column
     const matchNameBody = (rowData: Demo.Match) => {
         return (
             <>
@@ -210,26 +195,6 @@ const MatchManagePage = () => {
         );
     };
 
-    // detail table row
-    const statusDetailBody = (rowData: Demo.Vote) => {
-        return (
-            <>
-                <span className="p-column-title">Status</span>
-                <span
-                    className={`status-badge status-${
-                        rowData.vote_status === 'Chờ kết quả'
-                            ? 'yellow'
-                            : rowData.vote_status === 'Đúng'
-                            ? 'green'
-                            : 'red'
-                    }`}
-                >
-                    {rowData.vote_status}
-                </span>
-            </>
-        );
-    };
-
     const customColumn: CustomColumn[] = [
         {
             field: 'name',
@@ -281,6 +246,26 @@ const MatchManagePage = () => {
         }
     ];
 
+    // detail table column
+    const statusDetailBody = (rowData: Demo.Vote) => {
+        return (
+            <>
+                <span className="p-column-title">Status</span>
+                <span
+                    className={`status-badge status-${
+                        rowData.vote_status === 'Chờ kết quả'
+                            ? 'yellow'
+                            : rowData.vote_status === 'Đúng'
+                            ? 'green'
+                            : 'red'
+                    }`}
+                >
+                    {rowData.vote_status}
+                </span>
+            </>
+        );
+    };
+
     return (
         <div className="grid crud-demo">
             <div className="col-12">
@@ -298,7 +283,7 @@ const MatchManagePage = () => {
                         onDelete={confirmDeleteItem}
                     />
 
-                    {/* match detail dialog */}
+                    {/* add/edit match dialog */}
                     <Dialog
                         visible={matchDialog}
                         style={{ width: '450px' }}
@@ -307,11 +292,16 @@ const MatchManagePage = () => {
                         className="p-fluid"
                         footer={
                             <>
-                                <Button label="Hủy" icon="pi pi-times" text onClick={hideDialog} />
+                                <Button
+                                    label="Hủy"
+                                    icon="pi pi-times"
+                                    text
+                                    onClick={() => setMatchDialog(false)}
+                                />
                                 <Button label="Lưu" icon="pi pi-check" text onClick={saveMatch} />
                             </>
                         }
-                        onHide={hideDialog}
+                        onHide={() => setMatchDialog(false)}
                     >
                         {/* Ten tran dau */}
                         <div className="field">
@@ -421,11 +411,11 @@ const MatchManagePage = () => {
                     </Dialog>
 
                     <ConfirmDialog
-                        visible={deleteProductDialog}
+                        visible={deleteDialog}
                         width={590}
                         confirmMessage={<span>Bạn có chắc chắn muốn xóa trận đấu này?</span>}
                         onYes={deleteItem}
-                        onNo={hideDeleteProductDialog}
+                        onNo={() => setDeleteDialog(false)}
                     />
                 </div>
             </div>

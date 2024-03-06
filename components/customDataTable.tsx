@@ -23,7 +23,7 @@ interface CustomDataTableProps {
 }
 
 const CustomDataTable = ({
-    data: matches,
+    data,
     tableName,
     dt,
     customColumn,
@@ -91,7 +91,7 @@ const CustomDataTable = ({
     return (
         <DataTable
             ref={dt}
-            value={matches}
+            value={data}
             selectionMode="single"
             selection={selectedProducts}
             onSelectionChange={(e) => setSelectedProducts(e.value as any)}
@@ -105,7 +105,7 @@ const CustomDataTable = ({
             className="datatable-responsive"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             currentPageReportTemplate="Hiển thị {first} đến {last} trong {totalRecords} trận đấu"
-            emptyMessage="Không tìm thấy trận đấu"
+            emptyMessage="Không tìm thấy dữ liệu"
             header={header}
         >
             <Column header="STT" body={indexBody} align="center"></Column>
@@ -117,8 +117,8 @@ const CustomDataTable = ({
                     header={column.header}
                     body={column.body}
                     headerStyle={{ minWidth: `${column.minWidth}` }}
-                    align="center"
-                    sortable
+                    align={column.align || 'center'} // default value is center
+                    sortable={column.sortable || true} // default value is true
                 />
             ))}
             <Column

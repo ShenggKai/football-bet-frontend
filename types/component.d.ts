@@ -3,4 +3,6 @@ export interface CustomColumn {
     header: string;
     body: any;
     minWidth: string;
+    align?: 'left' | 'right' | 'center';
+    sortable?: boolean;
 }
