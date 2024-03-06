@@ -42,9 +42,21 @@ const useAuth = () => {
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 showError(error.response.data.detail);
+
+                // for demo, remove in production
+                dispatch(setUserInfo(['admin', 'admin']));
+                dispatch(setAuthState(true));
+                router.push('/');
+
                 return error.response;
             } else {
                 showError('Lỗi máy chủ');
+
+                // for demo, remove in production
+                dispatch(setUserInfo(['admin', 'admin']));
+                dispatch(setAuthState(true));
+                router.push('/');
+
                 return error;
             }
         } finally {
