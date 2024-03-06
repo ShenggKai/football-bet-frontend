@@ -93,6 +93,16 @@ declare namespace Demo {
         vote_status: string;
     };
 
+    // minigame
+    type Minigame = {
+        id: number;
+        name: string;
+        money: number;
+        active_time: string;
+        expiration_time: string;
+        [key: string]: any;
+    };
+
     interface Task {
         id?: number;
         name?: string;
