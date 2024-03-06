@@ -137,6 +137,7 @@ const MatchManagePage = () => {
         setMatch(_match);
     };
 
+    // main table row
     const matchNameBody = (rowData: Demo.Match) => {
         return (
             <>
@@ -205,6 +206,26 @@ const MatchManagePage = () => {
             <>
                 <span className="p-column-title">score</span>
                 {rowData.score}
+            </>
+        );
+    };
+
+    // detail table row
+    const statusDetailBody = (rowData: Demo.Vote) => {
+        return (
+            <>
+                <span className="p-column-title">Status</span>
+                <span
+                    className={`status-badge status-${
+                        rowData.vote_status === 'Chờ kết quả'
+                            ? 'yellow'
+                            : rowData.vote_status === 'Đúng'
+                            ? 'green'
+                            : 'red'
+                    }`}
+                >
+                    {rowData.vote_status}
+                </span>
             </>
         );
     };
@@ -390,7 +411,11 @@ const MatchManagePage = () => {
                                 <Column field="member_name" header="Người chơi"></Column>
                                 <Column field="vote_time" header="Thời gian vote"></Column>
                                 <Column field="member_option" header="Lựa chọn"></Column>
-                                <Column field="vote_status" header="Trạng thái"></Column>
+                                <Column
+                                    field="vote_status"
+                                    header="Trạng thái"
+                                    body={statusDetailBody}
+                                ></Column>
                             </DataTable>
                         )}
                     </Dialog>
